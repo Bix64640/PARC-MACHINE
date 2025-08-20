@@ -200,23 +200,29 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // REMPLACEZ CES LIGNES AVEC VOS CLÉS SUPABASE
-        const SUPABASE_URL = 'YOUR_PROJECT_URL'; 
-        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+        const SUPABASE_URL = 'https://wmdghiouwtezkndrhsgm.supabase.co'; 
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZGdoaW91d3RlemtuZHJoc2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTAxNTgsImV4cCI6MjA3MTE4NjE1OH0.kjGVpTkzQsofxYte1JrYlq3A0BnJ3igI2WQPMttaB84';
         const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         let systemes = [];
-
+        
+        // Fonction pour charger les données de Supabase et mettre à jour le tableau
         async function chargerDonnees() {
             const { data, error } = await supabase
                 .from('systemes')
                 .select('*')
                 .order('id', { ascending: false });
 
-            if (error) { console.error('Erreur de chargement des données:', error); return; }
+            if (error) { 
+                console.error('Erreur de chargement des données:', error);
+                return;
+            }
+
             systemes = data;
             afficherTableau();
             mettreAJourStats();
         }
         
+        // Fonction pour ajouter un nouveau système
         async function ajouterSysteme() {
             const site = document.getElementById('site').value;
             const nomSysteme = document.getElementById('nomSysteme').value;
@@ -248,15 +254,20 @@
                 temps_panne: 0,
                 nb_pannes: 0
             };
-            const { data, error } = await supabase.from('systemes').insert([nouveauSysteme]);
-            if (error) { console.error('Erreur d\'ajout du système:', error); }
-            else { viderFormulaire(); chargerDonnees(); }
+            const { error } = await supabase.from('systemes').insert([nouveauSysteme]);
+            if (error) { 
+                console.error('Erreur d\'ajout du système:', error);
+            } else { 
+                viderFormulaire(); 
+                chargerDonnees();
+            }
         }
         
+        // Fonction pour afficher et mettre à jour les détails d'un système
         async function afficherDetails(id) {
             const systeme = systemes.find(s => s.id === id);
-            const detailsSection = document.getElementById('detailsSection');
-            const detailsSystemeNom = document.getElementById('detailsSystemeNom');
+            if (!systeme) return;
+
             const nbEmployes = parseFloat(prompt("Nombre d'employés affectés:", systeme.nb_employes)) || 0;
             const tauxHoraire = parseFloat(prompt("Taux horaire moyen (€):", systeme.taux_horaire)) || 0;
             const nbMachinesSimilaires = parseInt(prompt("Nombre de machines similaires:", systeme.nb_machines_similaires)) || 1;
@@ -281,12 +292,13 @@
                 nb_pannes: nbPannes
             };
             
-            const { data, error } = await supabase.from('systemes').update(systemeMaj).match({ id: id });
+            const { error } = await supabase.from('systemes').update(systemeMaj).match({ id: id });
             if (error) { console.error('Erreur de mise à jour des données:', error); }
             else {
                 const coutIndisponibiliteHeure = (nbEmployes * tauxHoraire) / nbMachinesSimilaires;
                 const totalFonctionnementHeures = systeme.total_heures * 52;
                 const mtbf = nbPannes > 0 ? totalFonctionnementHeures / nbPannes : Infinity;
+
                 document.getElementById('detailsSystemeNom').textContent = systeme.nom_systeme;
                 document.getElementById('nbEmployesValue').textContent = nbEmployes;
                 document.getElementById('tauxHoraireValue').textContent = tauxHoraire + ' €';
@@ -295,27 +307,31 @@
                 document.getElementById('nbPannesValue').textContent = nbPannes;
                 document.getElementById('coutHeureValue').textContent = coutIndisponibiliteHeure.toFixed(2) + ' €/h';
                 document.getElementById('mtbfValue').textContent = mtbf === Infinity ? 'N/A' : mtbf.toFixed(2) + ' h';
-                detailsSection.style.display = 'block';
+                
+                document.getElementById('detailsSection').style.display = 'block';
                 chargerDonnees();
             }
         }
         
+        // Fonction pour supprimer un système
         async function supprimerSysteme(id) {
             if (confirm('Êtes-vous sûr de vouloir supprimer ce système ?')) {
-                const { data, error } = await supabase.from('systemes').delete().match({ id: id });
+                const { error } = await supabase.from('systemes').delete().match({ id: id });
                 if (error) { console.error('Erreur de suppression:', error); }
                 else { masquerDetails(); chargerDonnees(); }
             }
         }
         
+        // Fonction pour vider tout le tableau
         async function viderTableau() {
-            if (confirm('Êtes-vous sûr de vouloir supprimer tous les systèmes ?')) {
-                const { data, error } = await supabase.from('systemes').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+            if (confirm('Êtes-vous sûr de vouloir supprimer TOUS les systèmes ?')) {
+                const { error } = await supabase.from('systemes').delete().not('id', 'is', null);
                 if (error) { console.error('Erreur de vidage du tableau:', error); }
                 else { masquerDetails(); chargerDonnees(); }
             }
         }
         
+        // Fonctions d'affichage (pas de changement majeur)
         function masquerDetails() {
             document.getElementById('detailsSection').style.display = 'none';
         }
