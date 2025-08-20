@@ -611,6 +611,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('filtreSite').addEventListener('change', afficherTableau);
         document.querySelector('.btn').addEventListener('click', ajouterSysteme);
+        document.querySelector('.export-btn').addEventListener('click', exporterDonnees);
+        document.querySelector('.btn-danger').addEventListener('click', viderTableau);
         chargerDonnees();
     });
 
