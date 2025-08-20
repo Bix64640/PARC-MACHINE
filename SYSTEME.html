@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recensement des Systèmes par Site</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; font-weight: 700; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .controls { background: #f8f9fa; padding: 25px; border-bottom: 1px solid #dee2e6; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+        .control-group { display: flex; flex-direction: column; gap: 8px; }
+        .control-group label { font-weight: 600; color: #495057; font-size: 0.9em; }
+        input, select { padding: 12px 16px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px; transition: all 0.3s ease; background: white; }
+        input:focus, select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; margin-top: 20px; }
+        .btn-details { background: #3498db; }
+        .btn-details:hover { background: #2980b9; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); }
+        .btn-danger { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .btn-export { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+        .table-container { overflow-x: auto; padding: 25px; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        th { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); color: white; padding: 18px 15px; text-align: left; font-weight: 600; font-size: 0.95em; white-space: nowrap; }
+        td { padding: 15px; border-bottom: 1px solid #f1f3f4; vertical-align: top; }
+        tr:hover { background: #f8f9fa; }
+        .criticite-faible { background-color: #d4edda; color: #155724; }
+        .criticite-moyenne { background-color: #fff3cd; color: #856404; }
+        .criticite-elevée { background-color: #f8d7da; color: #721c24; }
+        .criticite-critique { background-color: #f5c6cb; color: #721c24; font-weight: bold; }
+        .monopole-oui { background-color: #f8d7da; color: #721c24; font-weight: 600; }
+        .monopole-non { background-color: #d4edda; color: #155724; }
+        .maintenabilite-facile { background-color: #d4edda; color: #155724; }
+        .maintenabilite-moyenne { background-color: #fff3cd; color: #856404; }
+        .maintenabilite-difficile { background-color: #f8d7da; color: #721c24; }
+        .delete-btn { background: #e74c3c; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; }
+        .delete-btn:hover { background: #c0392b; transform: scale(1.05); }
+        .details-btn { background: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; }
+        .details-btn:hover { background: #2980b9; transform: scale(1.05); }
+        .stats { background: #f8f9fa; padding: 25px; border-top: 1px solid #dee2e6; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 10px; text-align: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 2em; font-weight: bold; color: #667eea; margin-bottom: 5px; }
+        .stat-label { color: #6c757d; font-size: 0.9em; }
+        .filter-container { background: white; padding: 15px; border-radius: 8px; margin-left: auto; display: flex; gap: 10px; align-items: center; }
+        .details-section { display: none; padding: 25px; }
+        .details-section h2 { margin-bottom: 15px; color: #2c3e50; }
+        .details-header { display: flex; justify-content: space-between; align-items: center; }
+        @media (max-width: 768px) { .controls { flex-direction: column; align-items: stretch; } .control-group { width: 100%; } .filter-container { margin-left: 0; margin-top: 15px; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Recensement des Systèmes</h1>
+            <p>Analyse et suivi des systèmes critiques par site</p>
+        </div>
+        <div class="controls">
+            <div class="control-group">
+                <label>Site</label>
+                <select id="site">
+                    <option value="">Sélectionner un site</option>
+                    <option value="VOLTAIRE_BIDART">Site A - VOLTAIRE_BIDART</option>
+                    <option value="VOLTAIRE_MOLENE">Site B - VOLTAIRE_MOLENE</option>
+                    <option value="MEYER_COGNAC">Site C - MEYER_COGNAC</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Nom du Système</label>
+                <input type="text" id="nomSysteme" placeholder="Ex: Système de production automatisé">
+            </div>
+            <div class="control-group">
+                <label>Heures/Jour</label>
+                <input type="number" id="heuresJour" min="0" max="24" placeholder="Ex: 8">
+            </div>
+            <div class="control-group">
+                <label>Jours/Semaine</label>
+                <input type="number" id="joursSemaine" min="1" max="7" placeholder="Ex: 5">
+            </div>
+            <div class="control-group">
+                <label>Fonction de Production</label>
+                <select id="fonctionProduction">
+                    <option value="">Sélectionner</option>
+                    <option value="Production principale">Production principale</option>
+                    <option value="Support production">Support production</option>
+                    <option value="Qualité/Contrôle">Qualité/Contrôle</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Logistique">Logistique</option>
+                    <option value="Sécurité/Environnement">Sécurité/Environnement</option>
+                    <option value="IT/Supervision">IT/Supervision</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Criticité Système</label>
+                <select id="criticiteSysteme">
+                    <option value="">Sélectionner</option>
+                    <option value="Faible">Faible</option>
+                    <option value="Moyenne">Moyenne</option>
+                    <option value="Élevée">Élevée</option>
+                    <option value="Critique">Critique</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Monopole sur Processus</label>
+                <select id="monopole">
+                    <option value="">Sélectionner</option>
+                    <option value="Oui">Oui</option>
+                    <option value="Non">Non</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>Maintenabilité</label>
+                <select id="maintenabilite">
+                    <option value="">Sélectionner</option>
+                    <option value="Facile">Facile</option>
+                    <option value="Moyenne">Moyenne</option>
+                    <option value="Difficile">Difficile</option>
+                </select>
+            </div>
+            <div class="filter-container">
+                <label>Filtrer par site:</label>
+                <select id="filtreSite">
+                    <option value="">Tous les sites</option>
+                    <option value="VOLTAIRE_BIDART">Site A - VOLTAIRE_BIDART</option>
+                    <option value="VOLTAIRE_MOLENE">Site B - VOLTAIRE_MOLENE</option>
+                    <option value="MEYER_COGNAC">Site C - MEYER_COGNAC</option>
+                </select>
+            </div>
+            <button class="btn" onclick="ajouterSysteme()">➕ Ajouter Système</button>
+            <button class="btn btn-export" onclick="exporterDonnees()">📊 Exporter CSV</button>
+            <button class="btn btn-danger" onclick="viderTableau()">🗑️ Vider Tableau</button>
+        </div>
+        <div class="table-container">
+            <table id="tableauSystemes">
+                <thead>
+                    <tr>
+                        <th>Site</th>
+                        <th>Nom Système</th>
+                        <th>Heures/Jour</th>
+                        <th>Jours/Semaine</th>
+                        <th>Total H/Semaine</th>
+                        <th>Fonction Production</th>
+                        <th>Criticité</th>
+                        <th>Monopole</th>
+                        <th>Maintenabilité</th>
+                        <th>Actions</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+                <tbody id="corpsTableau">
+                </tbody>
+            </table>
+        </div>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalSystemes">0</div>
+                <div class="stat-label">Total Systèmes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="systemesCritiques">0</div>
+                <div class="stat-label">Systèmes Critiques</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="systemesMonopole">0</div>
+                <div class="stat-label">En Monopole</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="moyenneHeures">0</div>
+                <div class="stat-label">Moy. H/Semaine</div>
+            </div>
+        </div>
+        <div class="details-section" id="detailsSection">
+            <div class="details-header">
+                <h2>Détails du système : <span id="detailsSystemeNom"></span></h2>
+                <button class="btn btn-danger" onclick="masquerDetails()">❌ Fermer</button>
+            </div>
+            <div class="table-container">
+                <table id="detailsTable">
+                    <thead>
+                        <tr>
+                            <th>Facteur</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Nombre d'employés affectés</td><td id="nbEmployesValue"></td></tr>
+                        <tr><td>Taux horaire moyen</td><td id="tauxHoraireValue"></td></tr>
+                        <tr><td>Nombre de machines similaires</td><td id="nbMachinesSimilairesValue"></td></tr>
+                        <tr><td>Temps total de panne</td><td id="tempsPanneValue"></td></tr>
+                        <tr><td>Nombre de pannes</td><td id="nbPannesValue"></td></tr>
+                        <tr><td>**Coût d'indisponibilité par heure**</td><td id="coutHeureValue"></td></tr>
+                        <tr><td>**MTBF (Mean Time Between Failures)**</td><td id="mtbfValue"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // REMPLACEZ CES LIGNES AVEC VOS CLÉS SUPABASE
+        const SUPABASE_URL = 'YOUR_PROJECT_URL'; 
+        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let systemes = [];
+
+        async function chargerDonnees() {
+            const { data, error } = await supabase
+                .from('systemes')
+                .select('*')
+                .order('id', { ascending: false });
+
+            if (error) { console.error('Erreur de chargement des données:', error); return; }
+            systemes = data;
+            afficherTableau();
+            mettreAJourStats();
+        }
+        
+        async function ajouterSysteme() {
+            const site = document.getElementById('site').value;
+            const nomSysteme = document.getElementById('nomSysteme').value;
+            const heuresJour = parseFloat(document.getElementById('heuresJour').value) || 0;
+            const joursSemaine = parseInt(document.getElementById('joursSemaine').value) || 0;
+            const fonctionProduction = document.getElementById('fonctionProduction').value;
+            const criticiteSysteme = document.getElementById('criticiteSysteme').value;
+            const monopole = document.getElementById('monopole').value;
+            const maintenabilite = document.getElementById('maintenabilite').value;
+
+            if (!site || !nomSysteme || !fonctionProduction || !criticiteSysteme || !monopole || !maintenabilite) {
+                alert('Veuillez remplir tous les champs obligatoires');
+                return;
+            }
+            const totalHeures = heuresJour * joursSemaine;
+            const nouveauSysteme = {
+                site,
+                nom_systeme: nomSysteme,
+                heures_jour: heuresJour,
+                jours_semaine: joursSemaine,
+                total_heures: totalHeures,
+                fonction_production: fonctionProduction,
+                criticite: criticiteSysteme,
+                monopole,
+                maintenabilite,
+                nb_employes: 0,
+                taux_horaire: 0,
+                nb_machines_similaires: 1,
+                temps_panne: 0,
+                nb_pannes: 0
+            };
+            const { data, error } = await supabase.from('systemes').insert([nouveauSysteme]);
+            if (error) { console.error('Erreur d\'ajout du système:', error); }
+            else { viderFormulaire(); chargerDonnees(); }
+        }
+        
+        async function afficherDetails(id) {
+            const systeme = systemes.find(s => s.id === id);
+            const detailsSection = document.getElementById('detailsSection');
+            const detailsSystemeNom = document.getElementById('detailsSystemeNom');
+            const nbEmployes = parseFloat(prompt("Nombre d'employés affectés:", systeme.nb_employes)) || 0;
+            const tauxHoraire = parseFloat(prompt("Taux horaire moyen (€):", systeme.taux_horaire)) || 0;
+            const nbMachinesSimilaires = parseInt(prompt("Nombre de machines similaires:", systeme.nb_machines_similaires)) || 1;
+            const tempsPanne = parseFloat(prompt("Temps total de panne (h):", systeme.temps_panne)) || 0;
+            const nbPannes = parseInt(prompt("Nombre de pannes:", systeme.nb_pannes)) || 0;
+            
+            const systemeMaj = {
+                id: systeme.id,
+                nom_systeme: systeme.nom_systeme,
+                site: systeme.site,
+                heures_jour: systeme.heures_jour,
+                jours_semaine: systeme.jours_semaine,
+                total_heures: systeme.total_heures,
+                fonction_production: systeme.fonction_production,
+                criticite: systeme.criticite,
+                monopole: systeme.monopole,
+                maintenabilite: systeme.maintenabilite,
+                nb_employes: nbEmployes,
+                taux_horaire: tauxHoraire,
+                nb_machines_similaires: nbMachinesSimilaires,
+                temps_panne: tempsPanne,
+                nb_pannes: nbPannes
+            };
+            
+            const { data, error } = await supabase.from('systemes').update(systemeMaj).match({ id: id });
+            if (error) { console.error('Erreur de mise à jour des données:', error); }
+            else {
+                const coutIndisponibiliteHeure = (nbEmployes * tauxHoraire) / nbMachinesSimilaires;
+                const totalFonctionnementHeures = systeme.total_heures * 52;
+                const mtbf = nbPannes > 0 ? totalFonctionnementHeures / nbPannes : Infinity;
+                document.getElementById('detailsSystemeNom').textContent = systeme.nom_systeme;
+                document.getElementById('nbEmployesValue').textContent = nbEmployes;
+                document.getElementById('tauxHoraireValue').textContent = tauxHoraire + ' €';
+                document.getElementById('nbMachinesSimilairesValue').textContent = nbMachinesSimilaires;
+                document.getElementById('tempsPanneValue').textContent = tempsPanne + ' h';
+                document.getElementById('nbPannesValue').textContent = nbPannes;
+                document.getElementById('coutHeureValue').textContent = coutIndisponibiliteHeure.toFixed(2) + ' €/h';
+                document.getElementById('mtbfValue').textContent = mtbf === Infinity ? 'N/A' : mtbf.toFixed(2) + ' h';
+                detailsSection.style.display = 'block';
+                chargerDonnees();
+            }
+        }
+        
+        async function supprimerSysteme(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer ce système ?')) {
+                const { data, error } = await supabase.from('systemes').delete().match({ id: id });
+                if (error) { console.error('Erreur de suppression:', error); }
+                else { masquerDetails(); chargerDonnees(); }
+            }
+        }
+        
+        async function viderTableau() {
+            if (confirm('Êtes-vous sûr de vouloir supprimer tous les systèmes ?')) {
+                const { data, error } = await supabase.from('systemes').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+                if (error) { console.error('Erreur de vidage du tableau:', error); }
+                else { masquerDetails(); chargerDonnees(); }
+            }
+        }
+        
+        function masquerDetails() {
+            document.getElementById('detailsSection').style.display = 'none';
+        }
+        
+        function viderFormulaire() {
+            document.getElementById('site').value = '';
+            document.getElementById('nomSysteme').value = '';
+            document.getElementById('heuresJour').value = '';
+            document.getElementById('joursSemaine').value = '';
+            document.getElementById('fonctionProduction').value = '';
+            document.getElementById('criticiteSysteme').value = '';
+            document.getElementById('monopole').value = '';
+            document.getElementById('maintenabilite').value = '';
+        }
+        
+        function afficherTableau() {
+            const filtreSite = document.getElementById('filtreSite').value;
+            const systemesFiltres = filtreSite ? systemes.filter(s => s.site === filtreSite) : systemes;
+            const corpsTableau = document.getElementById('corpsTableau');
+            corpsTableau.innerHTML = '';
+            systemesFiltres.forEach(systeme => {
+                const ligne = document.createElement('tr');
+                ligne.innerHTML = `
+                    <td>${systeme.site}</td>
+                    <td><strong>${systeme.nom_systeme}</strong></td>
+                    <td>${systeme.heures_jour}h</td>
+                    <td>${systeme.jours_semaine}j</td>
+                    <td><strong>${systeme.total_heures}h</strong></td>
+                    <td>${systeme.fonction_production}</td>
+                    <td><span class="criticite-${systeme.criticite.toLowerCase()}">${systeme.criticite}</span></td>
+                    <td><span class="monopole-${systeme.monopole.toLowerCase()}">${systeme.monopole}</span></td>
+                    <td><span class="maintenabilite-${systeme.maintenabilite.toLowerCase()}">${systeme.maintenabilite}</span></td>
+                    <td><button class="delete-btn" onclick="supprimerSysteme('${systeme.id}')">Supprimer</button></td>
+                    <td><button class="details-btn" onclick="afficherDetails('${systeme.id}')">Détails</button></td>
+                `;
+                corpsTableau.appendChild(ligne);
+            });
+        }
+        
+        function mettreAJourStats() {
+            const total = systemes.length;
+            const critiques = systemes.filter(s => s.criticite === 'Critique' || s.criticite === 'Élevée').length;
+            const monopoles = systemes.filter(s => s.monopole === 'Oui').length;
+            const moyenneHeures = total > 0 ? Math.round(systemes.reduce((sum, s) => sum + s.total_heures, 0) / total) : 0;
+            document.getElementById('totalSystemes').textContent = total;
+            document.getElementById('systemesCritiques').textContent = critiques;
+            document.getElementById('systemesMonopole').textContent = monopoles;
+            document.getElementById('moyenneHeures').textContent = moyenneHeures;
+        }
+        
+        function exporterDonnees() {
+            if (systemes.length === 0) {
+                alert('Aucune donnée à exporter');
+                return;
+            }
+            let csv = 'Site,Nom Système,Heures/Jour,Jours/Semaine,Total H/Semaine,Fonction Production,Criticité,Monopole,Maintenabilité,Coût Indisponibilité/h,MTBF (h),Nombre Employés,Taux Horaire,Machines Similaires,Temps Panne,Nombre Pannes\n';
+            systemes.forEach(s => {
+                const coutIndisponibiliteHeure = (s.nb_employes * s.taux_horaire) / s.nb_machines_similaires;
+                const totalFonctionnementHeures = s.total_heures * 52;
+                const mtbf = s.nb_pannes > 0 ? totalFonctionnementHeures / s.nb_pannes : 'N/A';
+                csv += `"${s.site}","${s.nom_systeme}",${s.heures_jour},${s.jours_semaine},${s.total_heures},"${s.fonction_production}","${s.criticite}","${s.monopole}","${s.maintenabilite}",${coutIndisponibiliteHeure.toFixed(2)},${mtbf},${s.nb_employes},${s.taux_horaire},${s.nb_machines_similaires},${s.temps_panne},${s.nb_pannes}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `recensement_systemes_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+        
+        document.getElementById('filtreSite').addEventListener('change', afficherTableau);
+        chargerDonnees();
+    </script>
+</body>
+</html>
