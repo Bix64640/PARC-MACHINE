@@ -192,7 +192,10 @@
     <div class="details-section" id="detailsSection">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2>Détails du système : <span id="detailsSystemeNom"></span></h2>
+        <div>
         <button onclick="masquerDetails()" style="background:#e74c3c;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;">❌ Fermer</button>
+        <button onclick="modifierDetails()"style="background:#3498db;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;">✏️ Modifier</button>
+        </div>
       </div>
       <table class="details-table">
         <tr><th>Nb employés affectés</th><td id="nbEmployesValue"></td></tr>
