@@ -412,202 +412,208 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-        // REMPLACEZ CES LIGNES AVEC VOS CLÉS SUPABASE
-        const SUPABASE_URL = "https://wmdghiouwtezkndrhsgm.supabase.co"; 
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZGdoaW91d3RlemtuZHJoc2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTAxNTgsImV4cCI6MjA3MTE4NjE1OH0.kjGVpTkzQsofxYte1JrYlq3A0BnJ3igI2WQPMttaB84";
-        const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        let systemes = [];
-        
-        // Fonction pour charger les données de Supabase et mettre à jour le tableau
-        async function chargerDonnees() {
-            const { data, error } = await supabase
-                .from('systemes')
-                .select('*')
-                .order('id', { ascending: false });
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // REMPLACEZ CES LIGNES AVEC VOS CLÉS SUPABASE
+    const SUPABASE_URL = "https://wmdghiouwtezkndrhsgm.supabase.co"; 
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZGdoaW91d3RlemtuZHJoc2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTAxNTgsImV4cCI6MjA3MTE4NjE1OH0.kjGVpTkzQsofxYte1JrYlq3A0BnJ3igI2WQPMttaB84";
+    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let systemes = [];
+    
+    // --- FONCTIONS ASYNCHRONES POUR SUPABASE ---
+    
+    async function chargerDonnees() {
+        const { data, error } = await supabase
+            .from('systemes')
+            .select('*')
+            .order('id', { ascending: false });
 
-            if (error) { 
-                console.error('Erreur de chargement des données:', error);
-                return;
-            }
+        if (error) { 
+            console.error('Erreur de chargement des données:', error);
+            return;
+        }
 
-            systemes = data;
-            afficherTableau();
-            mettreAJourStats();
-        }
-        
-        // Fonction pour ajouter un nouveau système
-        async function ajouterSysteme() {
-            const site = document.getElementById('site').value;
-            const nomSysteme = document.getElementById('nomSysteme').value;
-            const heuresJour = parseFloat(document.getElementById('heuresJour').value) || 0;
-            const joursSemaine = parseInt(document.getElementById('joursSemaine').value) || 0;
-            const fonctionProduction = document.getElementById('fonctionProduction').value;
-            const criticiteSysteme = document.getElementById('criticiteSysteme').value;
-            const monopole = document.getElementById('monopole').value;
-            const maintenabilite = document.getElementById('maintenabilite').value;
+        systemes = data;
+        afficherTableau();
+        mettreAJourStats();
+    }
+    
+    async function ajouterSysteme() {
+        const site = document.getElementById('site').value;
+        const nomSysteme = document.getElementById('nomSysteme').value;
+        const heuresJour = parseFloat(document.getElementById('heuresJour').value) || 0;
+        const joursSemaine = parseInt(document.getElementById('joursSemaine').value) || 0;
+        const fonctionProduction = document.getElementById('fonctionProduction').value;
+        const criticiteSysteme = document.getElementById('criticiteSysteme').value;
+        const monopole = document.getElementById('monopole').value;
+        const maintenabilite = document.getElementById('maintenabilite').value;
 
-            if (!site || !nomSysteme || !fonctionProduction || !criticiteSysteme || !monopole || !maintenabilite) {
-                alert('Veuillez remplir tous les champs obligatoires');
-                return;
-            }
-            const totalHeures = heuresJour * joursSemaine;
-            const nouveauSysteme = {
-                site,
-                nom_systeme: nomSysteme,
-                heures_jour: heuresJour,
-                jours_semaine: joursSemaine,
-                total_heures: totalHeures,
-                fonction_production: fonctionProduction,
-                criticite: criticiteSysteme,
-                monopole,
-                maintenabilite,
-                nb_employes: 0,
-                taux_horaire: 0,
-                nb_machines_similaires: 1,
-                temps_panne: 0,
-                nb_pannes: 0
-            };
-            const { error } = await supabase.from('systemes').insert([nouveauSysteme]);
-            if (error) { 
-                console.error('Erreur d\'ajout du système:', error);
-            } else { 
-                viderFormulaire(); 
-                chargerDonnees();
-            }
-        }
-        
-        // Fonction pour afficher et mettre à jour les détails d'un système
-        async function afficherDetails(id) {
-            const systeme = systemes.find(s => s.id === id);
-            if (!systeme) return;
+        if (!site || !nomSysteme || !fonctionProduction || !criticiteSysteme || !monopole || !maintenabilite) {
+            alert('Veuillez remplir tous les champs obligatoires');
+            return;
+        }
+        const totalHeures = heuresJour * joursSemaine;
+        const nouveauSysteme = {
+            site,
+            nom_systeme: nomSysteme,
+            heures_jour: heuresJour,
+            jours_semaine: joursSemaine,
+            total_heures: totalHeures,
+            fonction_production: fonctionProduction,
+            criticite: criticiteSysteme,
+            monopole,
+            maintenabilite,
+            nb_employes: 0,
+            taux_horaire: 0,
+            nb_machines_similaires: 1,
+            temps_panne: 0,
+            nb_pannes: 0
+        };
+        const { error } = await supabase.from('systemes').insert([nouveauSysteme]);
+        if (error) { 
+            console.error('Erreur d\'ajout du système:', error);
+        } else { 
+            viderFormulaire(); 
+            chargerDonnees();
+        }
+    }
+    
+    async function afficherDetails(id) {
+        const systeme = systemes.find(s => s.id === id);
+        if (!systeme) return;
 
-            const nbEmployes = parseFloat(prompt("Nombre d'employés affectés:", systeme.nb_employes)) || 0;
-            const tauxHoraire = parseFloat(prompt("Taux horaire moyen (€):", systeme.taux_horaire)) || 0;
-            const nbMachinesSimilaires = parseInt(prompt("Nombre de machines similaires:", systeme.nb_machines_similaires)) || 1;
-            const tempsPanne = parseFloat(prompt("Temps total de panne (h):", systeme.temps_panne)) || 0;
-            const nbPannes = parseInt(prompt("Nombre de pannes:", systeme.nb_pannes)) || 0;
-            
-            const systemeMaj = {
-                nb_employes: nbEmployes,
-                taux_horaire: tauxHoraire,
-                nb_machines_similaires: nbMachinesSimilaires,
-                temps_panne: tempsPanne,
-                nb_pannes: nbPannes
-            };
-            
-            const { error } = await supabase.from('systemes').update(systemeMaj).match({ id: id });
-            if (error) { console.error('Erreur de mise à jour des données:', error); }
-            else {
-                const coutIndisponibiliteHeure = (nbEmployes * tauxHoraire) / nbMachinesSimilaires;
-                const totalFonctionnementHeures = systeme.total_heures * 52;
-                const mtbf = nbPannes > 0 ? totalFonctionnementHeures / nbPannes : Infinity;
+        const nbEmployes = parseFloat(prompt("Nombre d'employés affectés:", systeme.nb_employes)) || 0;
+        const tauxHoraire = parseFloat(prompt("Taux horaire moyen (€):", systeme.taux_horaire)) || 0;
+        const nbMachinesSimilaires = parseInt(prompt("Nombre de machines similaires:", systeme.nb_machines_similaires)) || 1;
+        const tempsPanne = parseFloat(prompt("Temps total de panne (h):", systeme.temps_panne)) || 0;
+        const nbPannes = parseInt(prompt("Nombre de pannes:", systeme.nb_pannes)) || 0;
+        
+        const systemeMaj = {
+            nb_employes: nbEmployes,
+            taux_horaire: tauxHoraire,
+            nb_machines_similaires: nbMachinesSimilaires,
+            temps_panne: tempsPanne,
+            nb_pannes: nbPannes
+        };
+        
+        const { error } = await supabase.from('systemes').update(systemeMaj).match({ id: id });
+        if (error) { console.error('Erreur de mise à jour des données:', error); }
+        else {
+            const coutIndisponibiliteHeure = (nbEmployes * tauxHoraire) / nbMachinesSimilaires;
+            const totalFonctionnementHeures = systeme.total_heures * 52;
+            const mtbf = nbPannes > 0 ? totalFonctionnementHeures / nbPannes : Infinity;
 
-                document.getElementById('detailsSystemeNom').textContent = systeme.nom_systeme;
-                document.getElementById('nbEmployesValue').textContent = nbEmployes;
-                document.getElementById('tauxHoraireValue').textContent = tauxHoraire + ' €';
-                document.getElementById('nbMachinesSimilairesValue').textContent = nbMachinesSimilaires;
-                document.getElementById('tempsPanneValue').textContent = tempsPanne + ' h';
-                document.getElementById('nbPannesValue').textContent = nbPannes;
-                document.getElementById('coutHeureValue').textContent = coutIndisponibiliteHeure.toFixed(2) + ' €/h';
-                document.getElementById('mtbfValue').textContent = mtbf === Infinity ? 'N/A' : mtbf.toFixed(2) + ' h';
-                
-                document.getElementById('detailsSection').style.display = 'block';
-                chargerDonnees();
-            }
-        }
-        
-        // Fonction pour supprimer un système
-        async function supprimerSysteme(id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer ce système ?')) {
-                const { error } = await supabase.from('systemes').delete().match({ id: id });
-                if (error) { console.error('Erreur de suppression:', error); }
-                else { masquerDetails(); chargerDonnees(); }
-            }
-        }
-        
-        // Fonction pour vider tout le tableau
-        async function viderTableau() {
-            if (confirm('Êtes-vous sûr de vouloir supprimer TOUS les systèmes ?')) {
-                const { error } = await supabase.from('systemes').delete().not('id', 'is', null);
-                if (error) { console.error('Erreur de vidage du tableau:', error); }
-                else { masquerDetails(); chargerDonnees(); }
-            }
-        }
-        
-        // Fonctions d'affichage (pas de changement majeur)
-        function masquerDetails() {
-            document.getElementById('detailsSection').style.display = 'none';
-        }
-        
-        function viderFormulaire() {
-            document.getElementById('site').value = '';
-            document.getElementById('nomSysteme').value = '';
-            document.getElementById('heuresJour').value = '';
-            document.getElementById('joursSemaine').value = '';
-            document.getElementById('fonctionProduction').value = '';
-            document.getElementById('criticiteSysteme').value = '';
-            document.getElementById('monopole').value = '';
-            document.getElementById('maintenabilite').value = '';
-        }
-        
-        function afficherTableau() {
-            const filtreSite = document.getElementById('filtreSite').value;
-            const systemesFiltres = filtreSite ? systemes.filter(s => s.site === filtreSite) : systemes;
-            const corpsTableau = document.getElementById('corpsTableau');
-            corpsTableau.innerHTML = '';
-            systemesFiltres.forEach(systeme => {
-                const ligne = document.createElement('tr');
-                ligne.innerHTML = `
-                    <td>${systeme.site}</td>
-                    <td><strong>${systeme.nom_systeme}</strong></td>
-                    <td>${systeme.heures_jour}h</td>
-                    <td>${systeme.jours_semaine}j</td>
-                    <td><strong>${systeme.total_heures}h</strong></td>
-                    <td>${systeme.fonction_production}</td>
-                    <td><span class="criticite-${systeme.criticite.toLowerCase()}">${systeme.criticite}</span></td>
-                    <td><span class="monopole-${systeme.monopole.toLowerCase()}">${systeme.monopole}</span></td>
-                    <td><span class="maintenabilite-${systeme.maintenabilite.toLowerCase()}">${systeme.maintenabilite}</span></td>
-                    <td><button class="delete-btn" onclick="supprimerSysteme('${systeme.id}')">Supprimer</button></td>
-                    <td><button class="details-btn" onclick="afficherDetails('${systeme.id}')">Détails</button></td>
-                `;
-                corpsTableau.appendChild(ligne);
-            });
-        }
-        
-        function mettreAJourStats() {
-            const total = systemes.length;
-            const critiques = systemes.filter(s => s.criticite === 'Critique' || s.criticite === 'Élevée').length;
-            const monopoles = systemes.filter(s => s.monopole === 'Oui').length;
-            const moyenneHeures = total > 0 ? Math.round(systemes.reduce((sum, s) => sum + s.total_heures, 0) / total) : 0;
-            document.getElementById('totalSystemes').textContent = total;
-            document.getElementById('systemesCritiques').textContent = critiques;
-            document.getElementById('systemesMonopole').textContent = monopoles;
-            document.getElementById('moyenneHeures').textContent = moyenneHeures;
-        }
-        
-        function exporterDonnees() {
-            if (systemes.length === 0) {
-                alert('Aucune donnée à exporter');
-                return;
-            }
-            let csv = 'Site,Nom Système,Heures/Jour,Jours/Semaine,Total H/Semaine,Fonction Production,Criticité,Monopole,Maintenabilité,Coût Indisponibilité/h,MTBF (h),Nombre Employés,Taux Horaire,Machines Similaires,Temps Panne,Nombre Pannes\n';
-            systemes.forEach(s => {
-                const coutIndisponibiliteHeure = (s.nb_employes * s.taux_horaire) / s.nb_machines_similaires;
-                const totalFonctionnementHeures = s.total_heures * 52;
-                const mtbf = s.nb_pannes > 0 ? totalFonctionnementHeures / s.nb_pannes : 'N/A';
-                csv += `"${s.site}","${s.nom_systeme}",${s.heures_jour},${s.jours_semaine},${s.total_heures},"${s.fonction_production}","${s.criticite}","${s.monopole}","${s.maintenabilite}",${coutIndisponibiliteHeure.toFixed(2)},${mtbf},${s.nb_employes},${s.taux_horaire},${s.nb_machines_similaires},${s.temps_panne},${s.nb_pannes}\n`;
-            });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `recensement_systemes_${new Date().toISOString().slice(0,10)}.csv`;
-            link.click();
-        }
-        
-        document.getElementById('filtreSite').addEventListener('change', afficherTableau);
-        chargerDonnees();
-    </script>
+            document.getElementById('detailsSystemeNom').textContent = systeme.nom_systeme;
+            document.getElementById('nbEmployesValue').textContent = nbEmployes;
+            document.getElementById('tauxHoraireValue').textContent = tauxHoraire + ' €';
+            document.getElementById('nbMachinesSimilairesValue').textContent = nbMachinesSimilaires;
+            document.getElementById('tempsPanneValue').textContent = tempsPanne + ' h';
+            document.getElementById('nbPannesValue').textContent = nbPannes;
+            document.getElementById('coutHeureValue').textContent = coutIndisponibiliteHeure.toFixed(2) + ' €/h';
+            document.getElementById('mtbfValue').textContent = mtbf === Infinity ? 'N/A' : mtbf.toFixed(2) + ' h';
+            
+            document.getElementById('detailsSection').style.display = 'block';
+            chargerDonnees();
+        }
+    }
+    
+    async function supprimerSysteme(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce système ?')) {
+            const { error } = await supabase.from('systemes').delete().match({ id: id });
+            if (error) { console.error('Erreur de suppression:', error); }
+            else { masquerDetails(); chargerDonnees(); }
+        }
+    }
+    
+    async function viderTableau() {
+        if (confirm('Êtes-vous sûr de vouloir supprimer TOUS les systèmes ?')) {
+            const { error } = await supabase.from('systemes').delete().not('id', 'is', null);
+            if (error) { console.error('Erreur de vidage du tableau:', error); }
+            else { masquerDetails(); chargerDonnees(); }
+        }
+    }
+    
+    // --- FONCTIONS D'AFFICHAGE ET D'INTERFACE UTILISATEUR ---
+    
+    function masquerDetails() {
+        document.getElementById('detailsSection').style.display = 'none';
+    }
+    
+    function viderFormulaire() {
+        document.getElementById('site').value = '';
+        document.getElementById('nomSysteme').value = '';
+        document.getElementById('heuresJour').value = '';
+        document.getElementById('joursSemaine').value = '';
+        document.getElementById('fonctionProduction').value = '';
+        document.getElementById('criticiteSysteme').value = '';
+        document.getElementById('monopole').value = '';
+        document.getElementById('maintenabilite').value = '';
+    }
+    
+    function afficherTableau() {
+        const filtreSite = document.getElementById('filtreSite').value;
+        const systemesFiltres = filtreSite ? systemes.filter(s => s.site === filtreSite) : systemes;
+        const corpsTableau = document.getElementById('corpsTableau');
+        corpsTableau.innerHTML = '';
+        systemesFiltres.forEach(systeme => {
+            const ligne = document.createElement('tr');
+            ligne.innerHTML = `
+                <td>${systeme.site}</td>
+                <td><strong>${systeme.nom_systeme}</strong></td>
+                <td>${systeme.heures_jour}h</td>
+                <td>${systeme.jours_semaine}j</td>
+                <td><strong>${systeme.total_heures}h</strong></td>
+                <td>${systeme.fonction_production}</td>
+                <td><span class="criticite-${systeme.criticite.toLowerCase()}">${systeme.criticite}</span></td>
+                <td><span class="monopole-${systeme.monopole.toLowerCase()}">${systeme.monopole}</span></td>
+                <td><span class="maintenabilite-${systeme.maintenabilite.toLowerCase()}">${systeme.maintenabilite}</span></td>
+                <td><button class="delete-btn" onclick="supprimerSysteme('${systeme.id}')">Supprimer</button></td>
+                <td><button class="details-btn" onclick="afficherDetails('${systeme.id}')">Détails</button></td>
+            `;
+            corpsTableau.appendChild(ligne);
+        });
+    }
+    
+    function mettreAJourStats() {
+        const total = systemes.length;
+        const critiques = systemes.filter(s => s.criticite === 'Critique' || s.criticite === 'Élevée').length;
+        const monopoles = systemes.filter(s => s.monopole === 'Oui').length;
+        const moyenneHeures = total > 0 ? Math.round(systemes.reduce((sum, s) => sum + s.total_heures, 0) / total) : 0;
+        document.getElementById('totalSystemes').textContent = total;
+        document.getElementById('systemesCritiques').textContent = critiques;
+        document.getElementById('systemesMonopole').textContent = monopoles;
+        document.getElementById('moyenneHeures').textContent = moyenneHeures;
+    }
+    
+    function exporterDonnees() {
+        if (systemes.length === 0) {
+            alert('Aucune donnée à exporter');
+            return;
+        }
+        let csv = 'Site,Nom Système,Heures/Jour,Jours/Semaine,Total H/Semaine,Fonction Production,Criticité,Monopole,Maintenabilité,Coût Indisponibilité/h,MTBF (h),Nombre Employés,Taux Horaire,Machines Similaires,Temps Panne,Nombre Pannes\n';
+        systemes.forEach(s => {
+            const coutIndisponibiliteHeure = (s.nb_employes * s.taux_horaire) / s.nb_machines_similaires;
+            const totalFonctionnementHeures = s.total_heures * 52;
+            const mtbf = s.nb_pannes > 0 ? totalFonctionnementHeures / s.nb_pannes : 'N/A';
+            csv += `"${s.site}","${s.nom_systeme}",${s.heures_jour},${s.jours_semaine},${s.total_heures},"${s.fonction_production}","${s.criticite}","${s.monopole}","${s.maintenabilite}",${coutIndisponibiliteHeure.toFixed(2)},${mtbf},${s.nb_employes},${s.taux_horaire},${s.nb_machines_similaires},${s.temps_panne},${s.nb_pannes}\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `recensement_systemes_${new Date().toISOString().slice(0,10)}.csv`;
+        link.click();
+    }
+    
+    // --- GESTIONNAIRES D'ÉVÉNEMENTS ET INITIALISATION ---
+
+    // La page ne sera pas chargée tant que le DOM n'est pas prêt.
+    // C'est ici que nous attachons les écouteurs d'événements et démarrons l'application.
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('filtreSite').addEventListener('change', afficherTableau);
+        document.querySelector('.btn').addEventListener('click', ajouterSysteme);
+        chargerDonnees();
+    });
+
+</script>
 </body>
 </html>
