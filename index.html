@@ -5,92 +5,268 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recensement des Systèmes</title>
     <style>
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #2f3781 100%);
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
     }
+
     .container {
-      max-width: 1200px;
-      margin: auto;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      overflow: hidden;
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
     }
+
     .header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
     }
+
+    .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .header p {
+        font-size: 1.1em;
+        opacity: 0.9;
+    }
+
     .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      padding: 20px;
-      background: #f8f9fa;
-      border-bottom: 1px solid #ddd;
+        background: #f8f9fa;
+        padding: 25px;
+        border-bottom: 1px solid #dee2e6;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        align-items: center;
     }
+
     .control-group {
-      display: flex;
-      flex-direction: column;
-      flex: 1 1 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
+
     .control-group label {
-      font-size: 0.9em;
-      margin-bottom: 5px;
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9em;
     }
+
     input, select {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: white;
     }
+
+    input:focus, select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
     .btn {
-      background: #3c71d3;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: auto;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        margin-top: 20px;
     }
-    .btn:hover { background: #5563d6; }
+    
+    .btn-details {
+        background: #3498db;
+    }
+    
+    .btn-details:hover {
+        background: #2980b9;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    }
+
+    .btn-export {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    }
+
+    .table-container {
+        overflow-x: auto;
+        padding: 25px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+    }
+
+    th {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 18px 15px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.95em;
+        white-space: nowrap;
+    }
+
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #f1f3f4;
+        vertical-align: top;
+    }
+
+    tr:hover {
+        background: #f8f9fa;
+    }
+
+    .criticite-faible { background-color: #d4edda; color: #155724; }
+    .criticite-moyenne { background-color: #fff3cd; color: #856404; }
+    .criticite-elevée { background-color: #f8d7da; color: #721c24; }
+    .criticite-critique { background-color: #f5c6cb; color: #721c24; font-weight: bold; }
+
+    .monopole-oui { background-color: #f8d7da; color: #721c24; font-weight: 600; }
+    .monopole-non { background-color: #d4edda; color: #155724; }
+
+    .maintenabilite-facile { background-color: #d4edda; color: #155724; }
+    .maintenabilite-moyenne { background-color: #fff3cd; color: #856404; }
+    .maintenabilite-difficile { background-color: #f8d7da; color: #721c24; }
+
     .delete-btn {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s ease;
     }
-    .delete-btn:hover { background: #c0392b; }
+
+    .delete-btn:hover {
+        background: #c0392b;
+        transform: scale(1.05);
+    }
+
     .details-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s ease;
     }
-    .details-btn:hover { background: #2980b9; }
-    .table-container { padding: 20px; }
-    table { width: 100%; border-collapse: collapse; background: white; }
-    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
-    th { background: #34495e; color: white; }
+
+    .details-btn:hover {
+        background: #2980b9;
+        transform: scale(1.05);
+    }
+
+    .stats {
+        background: #f8f9fa;
+        padding: 25px;
+        border-top: 1px solid #dee2e6;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9em;
+    }
+
+    .filter-container {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-left: auto;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
     .details-section {
-      display: none;
-      padding: 20px;
-      border-top: 2px solid #ddd;
-      background: #f9f9f9;
+        display: none; /* Hidden by default */
+        padding: 25px;
     }
-    .details-section h2 { margin: 0; }
-    .details-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .details-table th, .details-table td { padding: 10px; border: 1px solid #ddd; }
-  </style>
+
+    .details-section h2 {
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+        .controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .control-group {
+            width: 100%;
+        }
+        
+        .filter-container {
+            margin-left: 0;
+            margin-top: 15px;
+        }
+    }
+</style>
 </head>
 <body>
   <h1>📊 Recensement des Systèmes</h1>
