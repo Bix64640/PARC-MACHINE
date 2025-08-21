@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recensement des Systèmes</title>
     <style>
- body {
+ <style>
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
@@ -26,22 +27,37 @@
       padding: 20px;
       text-align: center;
     }
+    .header h1 {
+      text-align: center;
+      margin: 0 0 10px 0;
+    }
     .controls {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       padding: 20px;
-      background: #f8f9fa;
+      background: white;
       border-bottom: 1px solid #ddd;
+      border-radius: 12px;
+      margin: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     .control-group {
       display: flex;
       flex-direction: column;
       flex: 1 1 200px;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .control-group label {
       font-size: 0.9em;
       margin-bottom: 5px;
+      text-align: center;
+      font-weight: bold;
+      color: #2c3e50;
     }
     input, select {
       padding: 8px;
@@ -63,19 +79,21 @@
       background: #e74c3c;
       color: white;
       border: none;
-      padding: 6px 10px;
+      padding: 4px 8px;
       border-radius: 4px;
       cursor: pointer;
-      margin-left: 5px;
+      margin-left: 3px;
+      font-size: 0.8em;
     }
     .delete-btn:hover { background: #c0392b; }
     .details-btn {
       background: #3498db;
       color: white;
       border: none;
-      padding: 6px 10px;
+      padding: 4px 8px;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 0.8em;
     }
     .details-btn:hover { background: #2980b9; }
     .modify-btn {
@@ -88,10 +106,81 @@
       margin-left: 5px;
     }
     .modify-btn:hover { background: #e67e22; }
-    .table-container { padding: 20px; }
-    table { width: 100%; border-collapse: collapse; background: white; }
-    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
-    th { background: #34495e; color: white; }
+    .table-container { 
+      padding: 20px; 
+      background: white;
+      border-radius: 12px;
+      margin: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow-x: auto; /* Permet le scroll horizontal si nécessaire */
+    }
+    table { 
+      width: 100%; 
+      border-collapse: separate;
+      border-spacing: 0;
+      background: white; 
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      font-size: 0.85em; /* Réduire la taille de police */
+      min-width: 800px; /* Largeur minimale pour éviter l'écrasement */
+    }
+    th, td { 
+      padding: 8px 6px; /* Réduire le padding */
+      border: 1px solid #e0e0e0; 
+      text-align: center; 
+      vertical-align: middle;
+      white-space: nowrap; /* Éviter le retour à la ligne */
+    }
+    th { 
+      background: #34495e; 
+      color: white; 
+      font-weight: bold;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    td {
+      background: white;
+    }
+    /* Largeurs spécifiques pour les colonnes */
+    th:nth-child(1), td:nth-child(1) { width: 12%; } /* Site */
+    th:nth-child(2), td:nth-child(2) { width: 15%; } /* Nom */
+    th:nth-child(3), td:nth-child(3) { width: 6%; }  /* H/J */
+    th:nth-child(4), td:nth-child(4) { width: 6%; }  /* J/S */
+    th:nth-child(5), td:nth-child(5) { width: 8%; }  /* Total H/S */
+    th:nth-child(6), td:nth-child(6) { width: 12%; } /* Fonction */
+    th:nth-child(7), td:nth-child(7) { width: 10%; } /* Criticité */
+    th:nth-child(8), td:nth-child(8) { width: 8%; }  /* Monopole */
+    th:nth-child(9), td:nth-child(9) { width: 12%; } /* Maintenabilité */
+    th:nth-child(10), td:nth-child(10) { width: 11%; } /* Actions */
+    
+    /* Arrondir les coins du tableau */
+    th:first-child {
+      border-top-left-radius: 8px;
+    }
+    th:last-child {
+      border-top-right-radius: 8px;
+    }
+    tr:last-child td:first-child {
+      border-bottom-left-radius: 8px;
+    }
+    tr:last-child td:last-child {
+      border-bottom-right-radius: 8px;
+    }
+
+    /* Responsive pour petits écrans */
+    @media (max-width: 1200px) {
+      .table-container {
+        margin: 10px;
+        padding: 15px;
+      }
+      table {
+        font-size: 0.8em;
+      }
+      th, td {
+        padding: 6px 4px;
+      }
+    }
     .details-section {
       display: none;
       padding: 20px;
