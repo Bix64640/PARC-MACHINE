@@ -224,6 +224,22 @@
       <input type="text" id="nomSysteme">
     </div>
     <div>
+      <label>Fonction du Système</label><br>
+      <select id="fonction">
+        <option value="">Sélectionner</option>
+        <option value="DECOUPER">Découper</option>
+        <option value="REFENDRE">Refendre</option>
+        <option value="PARER">Parage</option>
+        <option value="JOINTURE">Jointure</option>
+        <option value="PIQUER">Piquer</option>
+        <option value="COLLER">Coller</option>
+        <option value="MARQUER">Marquer cuir</option>
+        <option value="ASSEMBLER">Assembler</option>
+        <option value="PONCER">Ponçer</option>
+        <option value="POLIR">Polir</option>
+      </select>
+    </div>
+    <div>
       <label>Heures/Jour</label><br>
       <input type="number" id="heuresJour" min="0" max="24">
     </div>
@@ -268,6 +284,7 @@
       <tr>
         <th>Site</th>
         <th>Nom Système</th>
+        <th>Fonction Système
         <th>H/J</th>
         <th>J/S</th>
         <th>Total H/S</th>
@@ -323,6 +340,7 @@
     async function ajouterSysteme() {
       const site = document.getElementById("site").value;
       const nomSysteme = document.getElementById("nomSysteme").value;
+      const fonction = document.getElementById("fonction").value;
       const heuresJour = parseFloat(document.getElementById("heuresJour").value) || 0;
       const joursSemaine = parseInt(document.getElementById("joursSemaine").value) || 0;
       const criticite = document.getElementById("criticiteSysteme").value;
@@ -351,6 +369,7 @@
         tr.innerHTML = `
           <td>${s.site}</td>
           <td>${s.nom_systeme}</td>
+          <td>${s.fonction_production}</td>
           <td>${s.heures_jour}</td>
           <td>${s.jours_semaine}</td>
           <td>${s.total_heures}</td>
