@@ -149,7 +149,7 @@
     th:nth-child(5), td:nth-child(5) { width: 8%; }  /* Total H/S */
     th:nth-child(6), td:nth-child(6) { width: 12%; } /* Fonction */
     th:nth-child(7), td:nth-child(7) { width: 10%; } /* Criticité */
-    th:nth-child(8), td:nth-child(8) { width: 8%; }  /* Monopole */
+    th:nth-child(8), td:nth-child(8) { width: 10%; } /* En service */
     th:nth-child(9), td:nth-child(9) { width: 12%; } /* Maintenabilité */
     th:nth-child(10), td:nth-child(10) { width: 11%; } /* Actions */
     
@@ -204,6 +204,16 @@
       cursor: pointer;
     }
     .close-btn:hover { background: #c0392b; }
+    .filter-bar {
+  display: flex;
+  gap: 15px;
+  font-size: 1.5em;
+  margin: 10px 20px;
+  cursor: pointer;
+}
+.filter-icon:hover { transform: scale(1.2); }
+.filtre-wrapper { display: none; margin: 10px 20px; }
+
 </style>
 </head>
 <body>
@@ -279,6 +289,49 @@
     </div>
   </div>
 
+  <div class="filter-bar">
+  <span class="filter-icon" onclick="toggleFiltre('site')">📍</span>
+  <span class="filter-icon" onclick="toggleFiltre('service')">⚡</span>
+  <span class="filter-icon" onclick="toggleFiltre('fonction')">⚙️</span>
+</div>
+
+<div id="filtreSiteWrapper" class="filtre-wrapper">
+  <label>Filtrer par Site</label><br>
+  <select id="filtreSite" onchange="afficherTableau()">
+    <option value="">Tous</option>
+    <option value="VOLTAIRE_BIDART">VOLTAIRE_BIDART</option>
+    <option value="VOLTAIRE_MOLENE">VOLTAIRE_MOLENE</option>
+    <option value="MEYER_COGNAC">MEYER_COGNAC</option>
+  </select>
+</div>
+
+<div id="filtreServiceWrapper" class="filtre-wrapper">
+  <label>Filtrer par En service</label><br>
+  <select id="filtreService" onchange="afficherTableau()">
+    <option value="">Tous</option>
+    <option value="Oui">Oui</option>
+    <option value="Non">Non</option>
+  </select>
+</div>
+
+<div id="filtreFonctionWrapper" class="filtre-wrapper">
+  <label>Filtrer par Fonction</label><br>
+  <select id="filtreFonction" onchange="afficherTableau()">
+    <option value="">Toutes</option>
+    <option value="DECOUPER">Découper</option>
+    <option value="REFENDRE">Refendre</option>
+    <option value="PARER">Parage</option>
+    <option value="JOINTURE">Jointure</option>
+    <option value="PIQUER">Piquer</option>
+    <option value="COLLER">Coller</option>
+    <option value="MARQUER">Marquer cuir</option>
+    <option value="ASSEMBLER">Assembler</option>
+    <option value="PONCER">Ponçer</option>
+    <option value="POLIR">Polir</option>
+  </select>
+</div>
+
+
   <table id="tableauSystemes">
     <thead>
       <tr>
@@ -327,6 +380,13 @@
 
     let systemes = [];
     let systemeActuel = null;
+
+    function toggleFiltre(type) {
+  document.getElementById("filtreSiteWrapper").style.display = (type === 'site') ? "block" : "none";
+  document.getElementById("filtreServiceWrapper").style.display = (type === 'service') ? "block" : "none";
+  document.getElementById("filtreFonctionWrapper").style.display = (type === 'fonction') ? "block" : "none";
+}
+
 
     // Charger les systèmes
     async function chargerDonnees() {
