@@ -60,12 +60,21 @@
       font-weight: bold;
       color: #2c3e50;
     }
-    input, select {
+    .input, select {
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-    .btn:hover { background: #be0202; }
+    .btn {
+      color: white;
+      border: none;
+      padding: 10px 12px;
+      margin: 4px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: auto;
+    }
     .delete-btn {
       background: #e74c3c;
       color: white;
@@ -76,9 +85,9 @@
       margin-left: 5px
       
     }
-    .delete-btn:hover { background: #c0392b; }
+    .delete-btn:hover { background: #b30000fb; }
     .details-btn {
-      background: #3498db;
+      background: #0078c9;
       color: white;
       border: none;
       padding: 4px 8px;
@@ -86,7 +95,7 @@
       cursor: pointer;
       font-size: 0.8em;
     }
-    .details-btn:hover { background: #2980b9; }
+    .details-btn:hover { background: #003d66; }
     .modify-btn {
       background: #f39c12;
       color: white;
@@ -188,14 +197,14 @@
       margin-bottom: 15px;
     }
     .close-btn {
-      background: #e74c3c;
+      background: #ffffff;
       color: white;
       border: none;
       padding: 6px 10px;
       border-radius: 4px;
       cursor: pointer;
     }
-    .close-btn:hover { background: #c0392b; }
+    .close-btn:hover { background: #ffffff; }
     .filter-bar {
         display: flex;
          gap: 15px;
@@ -209,7 +218,7 @@ filter-toggle {
 .filter-toggle button {
   background: #ffffff;
   color: white;
-  border: black 1px solid;
+  border: none;
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
