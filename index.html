@@ -93,236 +93,219 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>📊 Recensement des Systèmes</h1>
-      <p>Analyse et suivi des systèmes critiques par site</p>
-    </div>
+  <h1>📊 Recensement des Systèmes</h1>
 
-    <!-- Formulaire -->
-    <div class="controls">
-      <div class="control-group">
-        <label>Site</label>
-        <select id="site">
-          <option value="">Sélectionner</option>
-          <option value="VOLTAIRE_BIDART">Site A - VOLTAIRE_BIDART</option>
-          <option value="VOLTAIRE_MOLENE">Site B - VOLTAIRE_MOLENE</option>
-          <option value="MEYER_COGNAC">Site C - MEYER_COGNAC</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>Nom du Système</label>
-        <input type="text" id="nomSysteme">
-      </div>
-      <div class="control-group">
-        <label>Heures/Jour</label>
-        <input type="number" id="heuresJour" min="0" max="24">
-      </div>
-      <div class="control-group">
-        <label>Jours/Semaine</label>
-        <input type="number" id="joursSemaine" min="1" max="7">
-      </div>
-      <div class="control-group">
-        <label>Fonction</label>
-        <select id="fonctionProduction">
-          <option value="">Sélectionner</option>
-          <option value="Production principale">Production principale</option>
-          <option value="Support production">Support production</option>
-          <option value="Qualité/Contrôle">Qualité/Contrôle</option>
-          <option value="Maintenance">Maintenance</option>
-          <option value="Logistique">Logistique</option>
-          <option value="Sécurité/Environnement">Sécurité/Environnement</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>Criticité</label>
-        <select id="criticiteSysteme">
-          <option value="">Sélectionner</option>
-          <option value="Faible">Faible</option>
-          <option value="Moyenne">Moyenne</option>
-          <option value="Élevée">Élevée</option>
-          <option value="Critique">Critique</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>Monopole</label>
-        <select id="monopole">
-          <option value="">Sélectionner</option>
-          <option value="Oui">Oui</option>
-          <option value="Non">Non</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>Maintenabilité</label>
-        <select id="maintenabilite">
-          <option value="">Sélectionner</option>
-          <option value="Facile">Facile</option>
-          <option value="Moyenne">Moyenne</option>
-          <option value="Difficile">Difficile</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>&nbsp;</label>
-        <button class="btn" id="btnAjouter">➕ Ajouter</button>
-      </div>
+  <div class="controls">
+    <div>
+      <label>Site</label><br>
+      <select id="site">
+        <option value="">Sélectionner un site</option>
+        <option value="VOLTAIRE_BIDART">VOLTAIRE_BIDART</option>
+        <option value="VOLTAIRE_MOLENE">VOLTAIRE_MOLENE</option>
+        <option value="MEYER_COGNAC">MEYER_COGNAC</option>
+      </select>
     </div>
-
-    <!-- Tableau -->
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Site</th>
-            <th>Nom</th>
-            <th>H/J</th>
-            <th>J/S</th>
-            <th>Total H/S</th>
-            <th>Fonction</th>
-            <th>Criticité</th>
-            <th>Monopole</th>
-            <th>Maintenabilité</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="corpsTableau"></tbody>
-      </table>
+    <div>
+      <label>Nom du Système</label><br>
+      <input type="text" id="nomSysteme">
     </div>
-
-    <!-- Section détails -->
-    <div class="details-section" id="detailsSection">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2>Détails du système : <span id="detailsSystemeNom"></span></h2>
-        <div>
-        <button onclick="masquerDetails()" style="background:#e74c3c;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;">❌ Fermer</button>
-        <button onclick="modifierDetails()"style="background:#3498db;color:white;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;">✏️ Modifier</button>
-        </div>
-      </div>
-      <table class="details-table">
-        <tr><th>Nb employés affectés</th><td id="nbEmployesValue"></td></tr>
-        <tr><th>Taux horaire (€)</th><td id="tauxHoraireValue"></td></tr>
-        <tr><th>Machines similaires</th><td id="nbMachinesSimilairesValue"></td></tr>
-        <tr><th>Temps total de panne (h)</th><td id="tempsPanneValue"></td></tr>
-        <tr><th>Nombre de pannes</th><td id="nbPannesValue"></td></tr>
-        <tr><th>Coût d'indisponibilité /h</th><td id="coutHeureValue"></td></tr>
-        <tr><th>MTBF (h)</th><td id="mtbfValue"></td></tr>
-      </table>
+    <div>
+      <label>Heures/Jour</label><br>
+      <input type="number" id="heuresJour" min="0" max="24">
+    </div>
+    <div>
+      <label>Jours/Semaine</label><br>
+      <input type="number" id="joursSemaine" min="1" max="7">
+    </div>
+    <div>
+      <label>Criticité</label><br>
+      <select id="criticiteSysteme">
+        <option value="">Sélectionner</option>
+        <option value="Faible">Faible</option>
+        <option value="Moyenne">Moyenne</option>
+        <option value="Élevée">Élevée</option>
+        <option value="Critique">Critique</option>
+      </select>
+    </div>
+    <div>
+      <label>En service</label><br>
+      <select id="service">
+        <option value="">Sélectionner</option>
+        <option value="Oui">Oui</option>
+        <option value="Non">Non</option>
+      </select>
+    </div>
+    <div>
+      <label>Maintenabilité</label><br>
+      <select id="maintenabilite">
+        <option value="">Sélectionner</option>
+        <option value="Facile">Facile</option>
+        <option value="Moyenne">Moyenne</option>
+        <option value="Difficile">Difficile</option>
+      </select>
+    </div>
+    <div style="align-self:flex-end;">
+      <button id="btnAjouter" class="btn btn-primary">➕ Ajouter Système</button>
     </div>
   </div>
 
+  <table id="tableauSystemes">
+    <thead>
+      <tr>
+        <th>Site</th>
+        <th>Nom Système</th>
+        <th>H/J</th>
+        <th>J/S</th>
+        <th>Total H/S</th>
+        <th>Criticité</th>
+        <th>En service </th>
+        <th>Maintenabilité</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="corpsTableau"></tbody>
+  </table>
+
+  <!-- Section détails -->
+  <div class="details-section" id="detailsSection">
+    <div class="details-header">
+      <h2>Détails du système : <span id="detailsSystemeNom"></span></h2>
+      <div>
+        <button onclick="modifierDetails()" class="btn btn-info">✏️ Modifier</button>
+        <button onclick="masquerDetails()" class="btn btn-danger">❌ Fermer</button>
+      </div>
+    </div>
+    <table class="details-table">
+      <tr><th>Nb employés affectés</th><td id="nbEmployesValue"></td></tr>
+      <tr><th>Taux horaire</th><td id="tauxHoraireValue"></td></tr>
+      <tr><th>Machines similaires</th><td id="nbMachinesSimilairesValue"></td></tr>
+      <tr><th>Temps total de panne (h)</th><td id="tempsPanneValue"></td></tr>
+      <tr><th>Nombre de pannes</th><td id="nbPannesValue"></td></tr>
+      <tr><th>Coût d'indisponibilité /h</th><td id="coutHeureValue"></td></tr>
+      <tr><th>MTBF (h)</th><td id="mtbfValue"></td></tr>
+    </table>
+  </div>
+
+  <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://wmdghiouwtezkndrhsgm.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZGdoaW91d3RlemtuZHJoc2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTAxNTgsImV4cCI6MjA3MTE4NjE1OH0.kjGVpTkzQsofxYte1JrYlq3A0BnJ3igI2WQPMttaB84"; 
-
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZGdoaW91d3RlemtuZHJoc2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTAxNTgsImV4cCI6MjA3MTE4NjE1OH0.kjGVpTkzQsofxYte1JrYlq3A0BnJ3igI2WQPMttaB84";
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let systemes = [];
+    let systemeActuel = null;
 
-    // Charger
+    // Charger les systèmes
     async function chargerDonnees() {
-      const { data, error } = await supabaseClient.from("systemes").select("*").order("id", { ascending: false });
+      const { data, error } = await supabaseClient.from("systemes").select("*").order("id", { ascending:false });
       if (error) { console.error(error); return; }
       systemes = data;
       afficherTableau();
     }
 
-    // Ajouter
+    // Ajouter un système
     async function ajouterSysteme() {
       const site = document.getElementById("site").value;
       const nomSysteme = document.getElementById("nomSysteme").value;
       const heuresJour = parseFloat(document.getElementById("heuresJour").value) || 0;
       const joursSemaine = parseInt(document.getElementById("joursSemaine").value) || 0;
-      const fonctionProduction = document.getElementById("fonctionProduction").value;
-      const criticiteSysteme = document.getElementById("criticiteSysteme").value;
-      const monopole = document.getElementById("monopole").value;
+      const criticite = document.getElementById("criticiteSysteme").value;
+      const service = document.getElementById("service").value;
       const maintenabilite = document.getElementById("maintenabilite").value;
+
       if (!site || !nomSysteme) { alert("Champs obligatoires manquants"); return; }
-      const totalHeures = heuresJour * joursSemaine;
-      const nouveauSysteme = { site, nom_systeme: nomSysteme, heures_jour: heuresJour, jours_semaine: joursSemaine, total_heures: totalHeures, fonction_production: fonctionProduction, criticite: criticiteSysteme, monopole, maintenabilite, nb_employes: 0, taux_horaire: 0, nb_machines_similaires: 1, temps_panne: 0, nb_pannes: 0 };
+
+      const nouveauSysteme = {
+        site, nom_systeme: nomSysteme, heures_jour: heuresJour, jours_semaine: joursSemaine,
+        total_heures: heuresJour * joursSemaine,
+        criticite, service, maintenabilite,
+        nb_employes:0, taux_horaire:0, nb_machines_similaires:1, temps_panne:0, nb_pannes:0
+      };
+
       const { error } = await supabaseClient.from("systemes").insert([nouveauSysteme]);
       if (error) console.error(error);
-      else { viderFormulaire(); chargerDonnees(); }
+      else chargerDonnees();
     }
 
-    // Afficher
     function afficherTableau() {
-      const corpsTableau = document.getElementById("corpsTableau");
-      corpsTableau.innerHTML = "";
-      systemes.forEach((s) => {
-        const ligne = document.createElement("tr");
-        ligne.innerHTML = `
+      const corps = document.getElementById("corpsTableau");
+      corps.innerHTML = "";
+      systemes.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
           <td>${s.site}</td>
-          <td><strong>${s.nom_systeme}</strong></td>
+          <td>${s.nom_systeme}</td>
           <td>${s.heures_jour}</td>
           <td>${s.jours_semaine}</td>
           <td>${s.total_heures}</td>
-          <td>${s.fonction_production}</td>
           <td>${s.criticite}</td>
-          <td>${s.monopole}</td>
+          <td>${s.service}</td>
           <td>${s.maintenabilite}</td>
           <td>
-            <button class="details-btn" onclick="afficherDetails('${s.id}')">Détails</button>
-            <button class="delete-btn" onclick="supprimerSysteme('${s.id}')">Supprimer</button>
-          </td>`;
-        corpsTableau.appendChild(ligne);
+            <button class="btn btn-info" onclick="afficherDetails(${s.id})">Détails</button>
+            <button class="btn btn-danger" onclick="supprimerSysteme(${s.id})">Supprimer</button>
+          </td>
+        `;
+        corps.appendChild(tr);
       });
     }
 
-    // Afficher détails
     async function afficherDetails(id) {
-      const s = systemes.find(x => x.id == id);
-      if (!s) return;
-      const nbEmployes = parseFloat(prompt("Nb employés affectés:", s.nb_employes)) || 0;
-      const tauxHoraire = parseFloat(prompt("Taux horaire (€):", s.taux_horaire)) || 0;
-      const nbMachinesSimilaires = parseInt(prompt("Nb machines similaires:", s.nb_machines_similaires)) || 1;
-      const tempsPanne = parseFloat(prompt("Temps total panne (h):", s.temps_panne)) || 0;
-      const nbPannes = parseInt(prompt("Nb pannes:", s.nb_pannes)) || 0;
+      const systeme = systemes.find(s => s.id === id);
+      if (!systeme) return;
+      systemeActuel = systeme;
 
-      const maj = { nb_employes: nbEmployes, taux_horaire: tauxHoraire, nb_machines_similaires: nbMachinesSimilaires, temps_panne: tempsPanne, nb_pannes: nbPannes };
-      await supabaseClient.from("systemes").update(maj).match({ id });
+      const coutIndispo = (systeme.nb_employes * systeme.taux_horaire) / (systeme.nb_machines_similaires || 1);
+      const totalFonctionnement = systeme.total_heures * 52;
+      const mtbf = systeme.nb_pannes > 0 ? (totalFonctionnement / systeme.nb_pannes).toFixed(2) : "N/A";
 
-      const coutIndispo = (nbEmployes * tauxHoraire) / nbMachinesSimilaires;
-      const totalFonctionnementHeures = s.total_heures * 52;
-      const mtbf = nbPannes > 0 ? totalFonctionnementHeures / nbPannes : "N/A";
-
-      document.getElementById("detailsSystemeNom").textContent = s.nom_systeme;
-      document.getElementById("nbEmployesValue").textContent = nbEmployes;
-      document.getElementById("tauxHoraireValue").textContent = tauxHoraire + " €";
-      document.getElementById("nbMachinesSimilairesValue").textContent = nbMachinesSimilaires;
-      document.getElementById("tempsPanneValue").textContent = tempsPanne + " h";
-      document.getElementById("nbPannesValue").textContent = nbPannes;
-      document.getElementById("coutHeureValue").textContent = coutIndispo.toFixed(2) + " €/h";
+      document.getElementById("detailsSystemeNom").textContent = systeme.nom_systeme;
+      document.getElementById("nbEmployesValue").textContent = systeme.nb_employes;
+      document.getElementById("tauxHoraireValue").textContent = systeme.taux_horaire + " €";
+      document.getElementById("nbMachinesSimilairesValue").textContent = systeme.nb_machines_similaires;
+      document.getElementById("tempsPanneValue").textContent = systeme.temps_panne + " h";
+      document.getElementById("nbPannesValue").textContent = systeme.nb_pannes;
+      document.getElementById("coutHeureValue").textContent = isNaN(coutIndispo) ? "N/A" : coutIndispo.toFixed(2) + " €/h";
       document.getElementById("mtbfValue").textContent = mtbf;
-      document.getElementById("detailsSection").style.display = "block";
 
+      document.getElementById("detailsSection").style.display = "block";
+    }
+
+    async function modifierDetails() {
+      if (!systemeActuel) return;
+
+      const nbEmployes = parseInt(prompt("Nb employés:", systemeActuel.nb_employes)) || 0;
+      const tauxHoraire = parseFloat(prompt("Taux horaire (€):", systemeActuel.taux_horaire)) || 0;
+      const nbMachines = parseInt(prompt("Nb machines similaires:", systemeActuel.nb_machines_similaires)) || 1;
+      const tempsPanne = parseFloat(prompt("Temps panne (h):", systemeActuel.temps_panne)) || 0;
+      const nbPannes = parseInt(prompt("Nb pannes:", systemeActuel.nb_pannes)) || 0;
+
+      const maj = { nb_employes: nbEmployes, taux_horaire:tauxHoraire, nb_machines_similaires:nbMachines, temps_panne:tempsPanne, nb_pannes:nbPannes };
+
+      const { error } = await supabaseClient.from("systemes").update(maj).eq("id", systemeActuel.id);
+      if (error) { console.error(error); return; }
+
+      Object.assign(systemeActuel, maj);
+      afficherDetails(systemeActuel.id);
       chargerDonnees();
     }
 
-    // Supprimer
     async function supprimerSysteme(id) {
-      if (confirm("Supprimer ce système ?")) {
-        await supabaseClient.from("systemes").delete().match({ id });
-        masquerDetails();
-        chargerDonnees();
-      }
+      if (!confirm("Supprimer ce système ?")) return;
+      await supabaseClient.from("systemes").delete().eq("id", id);
+      masquerDetails();
+      chargerDonnees();
     }
 
-    // Fermer détails
     function masquerDetails() {
       document.getElementById("detailsSection").style.display = "none";
     }
 
-    // Vider form
-    function viderFormulaire() {
-      document.querySelectorAll(".controls input, .controls select").forEach(el => el.value = "");
-    }
-
     // Init
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("btnAjouter").addEventListener("click", ajouterSysteme);
-      chargerDonnees();
-    });
+    document.getElementById("btnAjouter").addEventListener("click", ajouterSysteme);
+    chargerDonnees();
   </script>
 </body>
 </html>
