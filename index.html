@@ -5,24 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recensement des Systèmes</title>
     <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background:#f6f8fa; }
-    h1 { text-align: center; }
-    .controls { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
-    .controls label { font-weight:bold; }
-    .controls select, .controls input { padding:5px; }
-    .btn { padding:6px 12px; border:none; border-radius:4px; cursor:pointer; }
-    .btn-primary { background:#667eea; color:white; }
-    .btn-danger { background:#e74c3c; color:white; }
-    .btn-info { background:#3498db; color:white; }
-    table { width:100%; border-collapse:collapse; background:white; margin-top:20px; }
-    th, td { border:1px solid #ccc; padding:8px; text-align:left; }
-    th { background:#333; color:white; }
-    tr:hover { background:#f1f1f1; }
-    .details-section { display:none; margin-top:20px; padding:15px; background:white; border:1px solid #ddd; border-radius:8px; }
-    .details-section h2 { margin:0 0 10px 0; }
-    .details-table { width:100%; border-collapse:collapse; }
-    .details-table th, .details-table td { border:1px solid #ccc; padding:8px; }
-    .details-header { display:flex; justify-content:space-between; align-items:center; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+    .header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #ddd;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 200px;
+    }
+    .control-group label {
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+    input, select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: auto;
+    }
+    .btn:hover { background: #5563d6; }
+    .delete-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .delete-btn:hover { background: #c0392b; }
+    .details-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .details-btn:hover { background: #2980b9; }
+    .table-container { padding: 20px; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #34495e; color: white; }
+    .details-section {
+      display: none;
+      padding: 20px;
+      border-top: 2px solid #ddd;
+      background: #f9f9f9;
+    }
+    .details-section h2 { margin: 0; }
+    .details-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    .details-table th, .details-table td { padding: 10px; border: 1px solid #ddd; }
   </style>
 </head>
 <body>
