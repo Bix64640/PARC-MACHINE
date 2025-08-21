@@ -75,7 +75,7 @@
       font-weight: bold;
       margin-top: auto;
     }
-    .btn:hover { background: #5563d6; }
+    .btn:hover { background: #be0202; }
     .delete-btn {
       background: #e74c3c;
       color: white;
@@ -217,15 +217,15 @@ filter-toggle {
   margin: 10px 20px;
 }
 .filter-toggle button {
-  background: #667eea;
+  background: #ffffff;
   color: white;
-  border: none;
+  border: black 1px solid;
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
 }
-.filter-toggle button:hover { background: #5563d6; }
+.filter-toggle button:hover { background: #ffffff; }
 
 .filtres-banner {
   display: none;
@@ -248,7 +248,7 @@ filter-toggle {
   flex-wrap: wrap;
 }
 .close-btn {
-  background: #e74c3c;
+  background:white
   border: none;
   color: white;
   padding: 4px 8px;
@@ -470,29 +470,39 @@ filter-toggle {
       else chargerDonnees();
     }
 
-    function afficherTableau() {
-      const corps = document.getElementById("corpsTableau");
-      corps.innerHTML = "";
-      systemes.forEach(s => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${s.site}</td>
-          <td>${s.nom_systeme}</td>
-          <td>${s.fonction_production}</td>
-          <td>${s.heures_jour}</td>
-          <td>${s.jours_semaine}</td>
-          <td>${s.total_heures}</td>
-          <td>${s.criticite}</td>
-          <td>${s.service}</td>
-          <td>${s.maintenabilite}</td>
-          <td>
-            <button class="btn btn-info" onclick="afficherDetails(${s.id})">Détails</button>
-            <button class="btn btn-danger" onclick="supprimerSysteme(${s.id})">Supprimer</button>
-          </td>
-        `;
-        corps.appendChild(tr);
-      });
-    }
+ function afficherTableau() {
+  // On récupère les valeurs des filtres
+  const filtreSite = document.getElementById("filtreSite")?.value || "";
+  const filtreCriticite = document.getElementById("filtreCriticite")?.value || "";
+  const filtreFonction = document.getElementById("filtreFonction")?.value || "";
+  
+  const corps = document.getElementById("corpsTableau");
+  corps.innerHTML = "";
+
+  systemes
+    .filter(s => !filtreSite || s.site === filtreSite)
+    .filter(s => !filtreCriticite || s.criticite === filtreCriticite)
+    .filter(s => !filtreFonction || s.fonction_production === filtreFonction)
+    .forEach(s => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${s.site}</td>
+        <td>${s.nom_systeme}</td>
+        <td>${s.fonction_production}</td>
+        <td>${s.heures_jour}</td>
+        <td>${s.jours_semaine}</td>
+        <td>${s.total_heures}</td>
+        <td>${s.criticite}</td>
+        <td>${s.service}</td>
+        <td>${s.maintenabilite}</td>
+        <td>
+          <button class="btn btn-info" onclick="afficherDetails(${s.id})">Détails</button>
+          <button class="btn btn-danger" onclick="supprimerSysteme(${s.id})">Supprimer</button>
+        </td>
+      `;
+      corps.appendChild(tr);
+    });
+}
 
     async function afficherDetails(id) {
       const systeme = systemes.find(s => s.id === id);
