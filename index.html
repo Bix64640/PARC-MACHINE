@@ -31,12 +31,6 @@
       margin: 0 0 10px 0;
       color: #ecf0f1;
     }
-    .h1{
-      font-size: 2em;
-      margin: 0;
-      text-align: center;
-      color: #ecf0f1;
-    }
 
     .controls {
       display: flex;
@@ -86,11 +80,11 @@
       background: #e74c3c;
       color: white;
       border: none;
-      padding: 4px 8px;
+      padding: 6x 10px;
       border-radius: 4px;
       cursor: pointer;
-      margin-left: 3px;
-      font-size: 0.8em;
+      margin-left: 5px
+      
     }
     .delete-btn:hover { background: #c0392b; }
     .details-btn {
@@ -107,7 +101,7 @@
       background: #f39c12;
       color: white;
       border: none;
-      padding: 6px 10px;
+      padding: 4px 8px;
       border-radius: 4px;
       cursor: pointer;
       margin-left: 5px;
@@ -213,19 +207,64 @@
     }
     .close-btn:hover { background: #c0392b; }
     .filter-bar {
-  display: flex;
-  gap: 15px;
-  font-size: 1.5em;
+        display: flex;
+         gap: 15px;
+        font-size: 0.85em;
+        margin: 10px 10px;
+        cursor: pointer;
+}
+filter-toggle {
   margin: 10px 20px;
+}
+.filter-toggle button {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.filter-toggle button:hover { background: #5563d6; }
+
+.filtres-banner {
+  display: none;
+  margin: 15px 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.filtres-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.filtres-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.close-btn {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
   cursor: pointer;
 }
-.filter-icon:hover { transform: scale(1.2); }
-.filtre-wrapper { display: none; margin: 10px 20px; }
+.close-btn:hover { background: #c0392b; }
 
 </style>
 </head>
 <body>
-  <h1>📊 Recensement des Systèmes</h1>
+  <div class="container">
+    <div class="header">
+      <h1>📊 Recensement des Systèmes</h1>
+      <p>Analyse et suivi des systèmes  par site</p>
+    </div>
 
   <div class="controls">
     <div>
@@ -297,46 +336,49 @@
     </div>
   </div>
 
-  <div class="filter-bar">
-  <span class="filter-icon" onclick="toggleFiltre('site')">📍</span>
-  <span class="filter-icon" onclick="toggleFiltre('service')">⚡</span>
-  <span class="filter-icon" onclick="toggleFiltre('fonction')">⚙️</span>
+<div class="filter-toggle">
+  <button onclick="toggleFiltres()">🔍 Filtres avancés</button>
 </div>
 
-<div id="filtreSiteWrapper" class="filtre-wrapper">
-  <label>Filtrer par Site</label><br>
-  <select id="filtreSite" onchange="afficherTableau()">
-    <option value="">Tous</option>
-    <option value="VOLTAIRE_BIDART">VOLTAIRE_BIDART</option>
-    <option value="VOLTAIRE_MOLENE">VOLTAIRE_MOLENE</option>
-    <option value="MEYER_COGNAC">MEYER_COGNAC</option>
-  </select>
-</div>
+<!-- Bannière de filtres cachée au départ -->
+<div id="filtresBanner" class="filtres-banner">
+  <div class="filtres-header">
+    <h3>🔎 Filtres avancés</h3>
+    <button class="close-btn" onclick="toggleFiltres()">❌</button>
+  </div>
+  <div class="filtres-controls">
+    <label>Filtrer par site :</label>
+    <select id="filtreSite" onchange="afficherTableau()">
+      <option value="">Tous les sites</option>
+      <option value="VOLTAIRE_BIDART">VOLTAIRE_BIDART</option>
+      <option value="VOLTAIRE_MOLENE">VOLTAIRE_MOLENE</option>
+      <option value="MEYER_COGNAC">MEYER_COGNAC</option>
+    </select>
 
-<div id="filtreServiceWrapper" class="filtre-wrapper">
-  <label>Filtrer par En service</label><br>
-  <select id="filtreService" onchange="afficherTableau()">
-    <option value="">Tous</option>
-    <option value="Oui">Oui</option>
-    <option value="Non">Non</option>
-  </select>
-</div>
+    <label>Filtrer par criticité :</label>
+    <select id="filtreCriticite" onchange="afficherTableau()">
+      <option value="">Toutes</option>
+      <option value="Faible">Faible</option>
+      <option value="Moyenne">Moyenne</option>
+      <option value="Élevée">Élevée</option>
+      <option value="Critique">Critique</option>
+    </select>
 
-<div id="filtreFonctionWrapper" class="filtre-wrapper">
-  <label>Filtrer par Fonction</label><br>
-  <select id="filtreFonction" onchange="afficherTableau()">
-    <option value="">Toutes</option>
-    <option value="DECOUPER">Découper</option>
-    <option value="REFENDRE">Refendre</option>
-    <option value="PARER">Parage</option>
-    <option value="JOINTURE">Jointure</option>
-    <option value="PIQUER">Piquer</option>
-    <option value="COLLER">Coller</option>
-    <option value="MARQUER">Marquer cuir</option>
-    <option value="ASSEMBLER">Assembler</option>
-    <option value="PONCER">Ponçer</option>
-    <option value="POLIR">Polir</option>
-  </select>
+    <label>Filtrer par fonction :</label>
+    <select id="filtreFonction" onchange="afficherTableau()">
+      <option value="">Toutes</option>
+      <option value="DECOUPER">Découper</option>
+      <option value="REFENDRE">Refendre</option>
+      <option value="PARER">Parage</option>
+      <option value="JOINTURE">Jointure</option>
+      <option value="PIQUER">Piquer</option>
+      <option value="COLLER">Coller</option>
+      <option value="MARQUER">Marquer cuir</option>
+      <option value="ASSEMBLER">Assembler</option>
+      <option value="PONCER">Ponçer</option>
+      <option value="POLIR">Polir</option>
+    </select>
+  </div>
 </div>
 
 
@@ -389,10 +431,9 @@
     let systemes = [];
     let systemeActuel = null;
 
-    function toggleFiltre(type) {
-  document.getElementById("filtreSiteWrapper").style.display = (type === 'site') ? "block" : "none";
-  document.getElementById("filtreServiceWrapper").style.display = (type === 'service') ? "block" : "none";
-  document.getElementById("filtreFonctionWrapper").style.display = (type === 'fonction') ? "block" : "none";
+    function toggleFiltres() {
+        const banner = document.getElementById("filtresBanner");
+        banner.style.display = (banner.style.display === "block") ? "none" : "block";
 }
 
 
