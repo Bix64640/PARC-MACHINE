@@ -65,49 +65,33 @@
       border: 1px solid #ccc;
       border-radius: 6px;
     }
-    .btn {
-    background: #4a4a4b;
-    color : white;
+.btn {
       border: none;
-      padding: 10px 12px;
-      margin: 4px 4px;
-      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 4px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      margin-top: auto;
-    }
-    .btn:hover{ background: #34495e}
-    .delete-btn {
-      background: #e74c3c;
+      transition: background 0.2s ease-in-out;
       color: white;
-      border: none;
-      padding: 6x 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 5px
-      
     }
-    .delete-btn:hover { background: #b30000fb; }
-    .details-btn {
-      background: #0078c9;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8em;
-    }
-    .details-btn:hover { background: #003d66; }
-    .modify-btn {
-      background: #f39c12;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 5px;
-    }
-    .modify-btn:hover { background: #e67e22; }
+
+    /* Ajouter système */
+    .btn-ajouter { background: #3498db; }
+    .btn-ajouter:hover { background: #2176bd; }
+
+    /* Supprimer */
+    .btn-supprimer { background: #e74c3c; }
+    .btn-supprimer:hover { background: #c0392b; }
+
+    /* Détails */
+    .btn-details { background: #0078c9; }
+    .btn-details:hover { background: #005b96; }
+
+    /* Modifier */
+    .btn-modifier { background: #27ae60; }
+    .btn-modifier:hover { background: #1e8449; }
+
     .table-container { 
       padding: 20px; 
       background: white;
@@ -333,7 +317,7 @@ filter-toggle {
       </select>
     </div>
     <div style="align-self:flex-end;">
-      <button id="btnAjouter" class="btn btn-primary">➕ Ajouter Système</button>
+      <button id="btnAjouter" class="btn btn-ajouter">➕ Ajouter Système</button>
     </div>
   </div>
 
@@ -406,8 +390,8 @@ filter-toggle {
     <div class="details-header">
       <h2>Détails du système : <span id="detailsSystemeNom"></span></h2>
       <div>
-        <button onclick="modifierDetails()" class="btn btn-info">✏️ Modifier</button>
-        <button onclick="masquerDetails()" class="btn btn-danger">❌ Fermer</button>
+        <button onclick="modifierDetails()" class="btn btn-modifier">✏️ Modifier</button>
+        <button onclick="masquerDetails()" class="btn btn-supprimer">❌ Supprimer</button>
       </div>
     </div>
     <table class="details-table">
