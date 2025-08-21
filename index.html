@@ -449,7 +449,7 @@ filter-toggle {
       if (!site || !nomSysteme) { alert("Champs obligatoires manquants"); return; }
 
       const nouveauSysteme = {
-        site, nom_systeme: nomSysteme, heures_jour: heuresJour, jours_semaine: joursSemaine,
+        site, nom_systeme: nomSysteme,fonction_production: fonction, heures_jour: heuresJour, jours_semaine: joursSemaine,
         total_heures: heuresJour * joursSemaine,
         criticite, service, maintenabilite,
         nb_employes:0, taux_horaire:0, nb_machines_similaires:1, temps_panne:0, nb_pannes:0
