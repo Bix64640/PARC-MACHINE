@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recensement des Systèmes</title>
-    <style>
+  <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,16 +20,8 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       overflow: hidden;
     }
-    .header {
-      background: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .header h1 {
-      text-align: center;
-      margin: 0 0 10px 0;
-    }
+    h1 { text-align: center; color:white; margin-bottom:20px; }
+
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -41,27 +33,14 @@
       margin: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      flex: 1 1 200px;
-      background: #f8f9fa;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #e9ecef;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .control-group label {
-      font-size: 0.9em;
-      margin-bottom: 5px;
-      text-align: center;
-      font-weight: bold;
-      color: #2c3e50;
-    }
+    .control-group { flex:1 1 200px; }
+    label { font-weight: bold; color: #2c3e50; }
+
     input, select {
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      width: 100%;
     }
     .btn {
       background: #667eea;
@@ -71,114 +50,35 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      margin-top: auto;
     }
     .btn:hover { background: #5563d6; }
-    .delete-btn {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
+
+    .filter-bar {
+      display: flex;
+      gap: 20px;
+      font-size: 1.8em;
+      margin: 10px 20px;
       cursor: pointer;
-      margin-left: 3px;
-      font-size: 0.8em;
     }
-    .delete-btn:hover { background: #c0392b; }
-    .details-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8em;
-    }
-    .details-btn:hover { background: #2980b9; }
-    .modify-btn {
-      background: #f39c12;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 5px;
-    }
-    .modify-btn:hover { background: #e67e22; }
-    .table-container { 
-      padding: 20px; 
+    .filter-icon:hover { transform: scale(1.2); }
+    .filtre-wrapper { display: none; margin: 10px 20px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
       background: white;
-      border-radius: 12px;
-      margin: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      overflow-x: auto; /* Permet le scroll horizontal si nécessaire */
-    }
-    table { 
-      width: 100%; 
-      border-collapse: separate;
-      border-spacing: 0;
-      background: white; 
-      border-radius: 8px;
-      overflow: hidden;
+      margin: 20px 0;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      font-size: 0.85em; /* Réduire la taille de police */
-      min-width: 800px; /* Largeur minimale pour éviter l'écrasement */
-    }
-    th, td { 
-      padding: 8px 6px; /* Réduire le padding */
-      border: 1px solid #e0e0e0; 
-      text-align: center; 
-      vertical-align: middle;
-      white-space: nowrap; /* Éviter le retour à la ligne */
-    }
-    th { 
-      background: #34495e; 
-      color: white; 
-      font-weight: bold;
-      text-align: center;
       font-size: 0.9em;
     }
-    td {
-      background: white;
+    th, td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: center;
     }
-    /* Largeurs spécifiques pour les colonnes */
-    th:nth-child(1), td:nth-child(1) { width: 12%; } /* Site */
-    th:nth-child(2), td:nth-child(2) { width: 15%; } /* Nom */
-    th:nth-child(3), td:nth-child(3) { width: 6%; }  /* H/J */
-    th:nth-child(4), td:nth-child(4) { width: 6%; }  /* J/S */
-    th:nth-child(5), td:nth-child(5) { width: 8%; }  /* Total H/S */
-    th:nth-child(6), td:nth-child(6) { width: 12%; } /* Fonction */
-    th:nth-child(7), td:nth-child(7) { width: 10%; } /* Criticité */
-    th:nth-child(8), td:nth-child(8) { width: 8%; }  /* Monopole */
-    th:nth-child(9), td:nth-child(9) { width: 12%; } /* Maintenabilité */
-    th:nth-child(10), td:nth-child(10) { width: 11%; } /* Actions */
-    
-    /* Arrondir les coins du tableau */
-    th:first-child {
-      border-top-left-radius: 8px;
-    }
-    th:last-child {
-      border-top-right-radius: 8px;
-    }
-    tr:last-child td:first-child {
-      border-bottom-left-radius: 8px;
-    }
-    tr:last-child td:last-child {
-      border-bottom-right-radius: 8px;
-    }
-
-    /* Responsive pour petits écrans */
-    @media (max-width: 1200px) {
-      .table-container {
-        margin: 10px;
-        padding: 15px;
-      }
-      table {
-        font-size: 0.8em;
-      }
-      th, td {
-        padding: 6px 4px;
-      }
+    th {
+      background: #34495e;
+      color: white;
     }
     .details-section {
       display: none;
@@ -186,9 +86,6 @@
       border-top: 2px solid #ddd;
       background: #f9f9f9;
     }
-    .details-section h2 { margin: 0; }
-    .details-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .details-table th, .details-table td { padding: 10px; border: 1px solid #ddd; }
     .details-header {
       display: flex;
       justify-content: space-between;
@@ -204,14 +101,14 @@
       cursor: pointer;
     }
     .close-btn:hover { background: #c0392b; }
-</style>
+  </style>
 </head>
 <body>
   <h1>📊 Recensement des Systèmes</h1>
 
+  <!-- Formulaire ajout -->
   <div class="controls">
-    <div>
-      <label>Site</label><br>
+    <div><label>Site</label><br>
       <select id="site">
         <option value="">Sélectionner un site</option>
         <option value="VOLTAIRE_BIDART">VOLTAIRE_BIDART</option>
@@ -219,12 +116,10 @@
         <option value="MEYER_COGNAC">MEYER_COGNAC</option>
       </select>
     </div>
-    <div>
-      <label>Nom du Système</label><br>
+    <div><label>Nom du Système</label><br>
       <input type="text" id="nomSysteme">
     </div>
-    <div>
-      <label>Fonction du Système</label><br>
+    <div><label>Fonction du Système</label><br>
       <select id="fonction">
         <option value="">Sélectionner</option>
         <option value="DECOUPER">Découper</option>
@@ -239,16 +134,13 @@
         <option value="POLIR">Polir</option>
       </select>
     </div>
-    <div>
-      <label>Heures/Jour</label><br>
+    <div><label>Heures/Jour</label><br>
       <input type="number" id="heuresJour" min="0" max="24">
     </div>
-    <div>
-      <label>Jours/Semaine</label><br>
+    <div><label>Jours/Semaine</label><br>
       <input type="number" id="joursSemaine" min="1" max="7">
     </div>
-    <div>
-      <label>Criticité</label><br>
+    <div><label>Criticité</label><br>
       <select id="criticiteSysteme">
         <option value="">Sélectionner</option>
         <option value="Faible">Faible</option>
@@ -257,16 +149,14 @@
         <option value="Critique">Critique</option>
       </select>
     </div>
-    <div>
-      <label>En service</label><br>
+    <div><label>En service</label><br>
       <select id="service">
         <option value="">Sélectionner</option>
         <option value="Oui">Oui</option>
         <option value="Non">Non</option>
       </select>
     </div>
-    <div>
-      <label>Maintenabilité</label><br>
+    <div><label>Maintenabilité</label><br>
       <select id="maintenabilite">
         <option value="">Sélectionner</option>
         <option value="Facile">Facile</option>
@@ -275,21 +165,64 @@
       </select>
     </div>
     <div style="align-self:flex-end;">
-      <button id="btnAjouter" class="btn btn-primary">➕ Ajouter Système</button>
+      <button id="btnAjouter" class="btn">➕ Ajouter Système</button>
     </div>
   </div>
 
+  <!-- Icônes filtres -->
+  <div class="filter-bar">
+    <span class="filter-icon" onclick="toggleFiltre('site')">📍</span>
+    <span class="filter-icon" onclick="toggleFiltre('service')">⚡</span>
+    <span class="filter-icon" onclick="toggleFiltre('fonction')">⚙️</span>
+  </div>
+
+  <!-- Menus filtres -->
+  <div id="filtreSiteWrapper" class="filtre-wrapper">
+    <label>Filtrer par Site</label><br>
+    <select id="filtreSite" onchange="afficherTableau()">
+      <option value="">Tous</option>
+      <option value="VOLTAIRE_BIDART">VOLTAIRE_BIDART</option>
+      <option value="VOLTAIRE_MOLENE">VOLTAIRE_MOLENE</option>
+      <option value="MEYER_COGNAC">MEYER_COGNAC</option>
+    </select>
+  </div>
+  <div id="filtreServiceWrapper" class="filtre-wrapper">
+    <label>Filtrer par En service</label><br>
+    <select id="filtreService" onchange="afficherTableau()">
+      <option value="">Tous</option>
+      <option value="Oui">Oui</option>
+      <option value="Non">Non</option>
+    </select>
+  </div>
+  <div id="filtreFonctionWrapper" class="filtre-wrapper">
+    <label>Filtrer par Fonction</label><br>
+    <select id="filtreFonction" onchange="afficherTableau()">
+      <option value="">Toutes</option>
+      <option value="DECOUPER">Découper</option>
+      <option value="REFENDRE">Refendre</option>
+      <option value="PARER">Parage</option>
+      <option value="JOINTURE">Jointure</option>
+      <option value="PIQUER">Piquer</option>
+      <option value="COLLER">Coller</option>
+      <option value="MARQUER">Marquer cuir</option>
+      <option value="ASSEMBLER">Assembler</option>
+      <option value="PONCER">Ponçer</option>
+      <option value="POLIR">Polir</option>
+    </select>
+  </div>
+
+  <!-- Tableau -->
   <table id="tableauSystemes">
     <thead>
       <tr>
         <th>Site</th>
         <th>Nom Système</th>
-        <th>Fonction Système
+        <th>Fonction Système</th>
         <th>H/J</th>
         <th>J/S</th>
         <th>Total H/S</th>
         <th>Criticité</th>
-        <th>En service </th>
+        <th>En service</th>
         <th>Maintenabilité</th>
         <th>Actions</th>
       </tr>
@@ -302,8 +235,8 @@
     <div class="details-header">
       <h2>Détails du système : <span id="detailsSystemeNom"></span></h2>
       <div>
-        <button onclick="modifierDetails()" class="btn btn-info">✏️ Modifier</button>
-        <button onclick="masquerDetails()" class="btn btn-danger">❌ Fermer</button>
+        <button onclick="modifierDetails()" class="btn">✏️ Modifier</button>
+        <button onclick="masquerDetails()" class="close-btn">❌ Fermer</button>
       </div>
     </div>
     <table class="details-table">
@@ -321,14 +254,19 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://wmdghiouwtezkndrhsgm.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndtZGdoaW91d3RlemtuZHJoc2dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTAxNTgsImV4cCI6MjA3MTE4NjE1OH0.kjGVpTkzQsofxYte1JrYlq3A0BnJ3igI2WQPMttaB84";
+    const SUPABASE_ANON_KEY = "TA_CLE_ANON";
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let systemes = [];
     let systemeActuel = null;
 
-    // Charger les systèmes
+    function toggleFiltre(type) {
+      document.getElementById("filtreSiteWrapper").style.display = (type === 'site') ? "block" : "none";
+      document.getElementById("filtreServiceWrapper").style.display = (type === 'service') ? "block" : "none";
+      document.getElementById("filtreFonctionWrapper").style.display = (type === 'fonction') ? "block" : "none";
+    }
+
     async function chargerDonnees() {
       const { data, error } = await supabaseClient.from("systemes").select("*").order("id", { ascending:false });
       if (error) { console.error(error); return; }
@@ -336,7 +274,6 @@
       afficherTableau();
     }
 
-    // Ajouter un système
     async function ajouterSysteme() {
       const site = document.getElementById("site").value;
       const nomSysteme = document.getElementById("nomSysteme").value;
@@ -350,7 +287,8 @@
       if (!site || !nomSysteme) { alert("Champs obligatoires manquants"); return; }
 
       const nouveauSysteme = {
-        site, nom_systeme: nomSysteme, heures_jour: heuresJour, jours_semaine: joursSemaine,
+        site, nom_systeme: nomSysteme, fonction_production: fonction,
+        heures_jour: heuresJour, jours_semaine: joursSemaine,
         total_heures: heuresJour * joursSemaine,
         criticite, service, maintenabilite,
         nb_employes:0, taux_horaire:0, nb_machines_similaires:1, temps_panne:0, nb_pannes:0
@@ -362,27 +300,36 @@
     }
 
     function afficherTableau() {
+      const filtreSite = document.getElementById("filtreSite").value;
+      const filtreService = document.getElementById("filtreService").value;
+      const filtreFonction = document.getElementById("filtreFonction").value;
+
       const corps = document.getElementById("corpsTableau");
       corps.innerHTML = "";
-      systemes.forEach(s => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${s.site}</td>
-          <td>${s.nom_systeme}</td>
-          <td>${s.fonction_production}</td>
-          <td>${s.heures_jour}</td>
-          <td>${s.jours_semaine}</td>
-          <td>${s.total_heures}</td>
-          <td>${s.criticite}</td>
-          <td>${s.service}</td>
-          <td>${s.maintenabilite}</td>
-          <td>
-            <button class="btn btn-info" onclick="afficherDetails(${s.id})">Détails</button>
-            <button class="btn btn-danger" onclick="supprimerSysteme(${s.id})">Supprimer</button>
-          </td>
-        `;
-        corps.appendChild(tr);
-      });
+
+      systemes
+        .filter(s => !filtreSite || s.site === filtreSite)
+        .filter(s => !filtreService || s.service === filtreService)
+        .filter(s => !filtreFonction || s.fonction_production === filtreFonction)
+        .forEach(s => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${s.site}</td>
+            <td>${s.nom_systeme}</td>
+            <td>${s.fonction_production || ""}</td>
+            <td>${s.heures_jour}</td>
+            <td>${s.jours_semaine}</td>
+            <td>${s.total_heures}</td>
+            <td>${s.criticite}</td>
+            <td>${s.service}</td>
+            <td>${s.maintenabilite}</td>
+            <td>
+              <button class="btn" onclick="afficherDetails(${s.id})">Détails</button>
+              <button class="close-btn" onclick="supprimerSysteme(${s.id})">Supprimer</button>
+            </td>
+          `;
+          corps.appendChild(tr);
+        });
     }
 
     async function afficherDetails(id) {
@@ -408,7 +355,6 @@
 
     async function modifierDetails() {
       if (!systemeActuel) return;
-
       const nbEmployes = parseInt(prompt("Nb employés:", systemeActuel.nb_employes)) || 0;
       const tauxHoraire = parseFloat(prompt("Taux horaire (€):", systemeActuel.taux_horaire)) || 0;
       const nbMachines = parseInt(prompt("Nb machines similaires:", systemeActuel.nb_machines_similaires)) || 1;
@@ -416,10 +362,8 @@
       const nbPannes = parseInt(prompt("Nb pannes:", systemeActuel.nb_pannes)) || 0;
 
       const maj = { nb_employes: nbEmployes, taux_horaire:tauxHoraire, nb_machines_similaires:nbMachines, temps_panne:tempsPanne, nb_pannes:nbPannes };
-
       const { error } = await supabaseClient.from("systemes").update(maj).eq("id", systemeActuel.id);
       if (error) { console.error(error); return; }
-
       Object.assign(systemeActuel, maj);
       afficherDetails(systemeActuel.id);
       chargerDonnees();
@@ -436,10 +380,8 @@
       document.getElementById("detailsSection").style.display = "none";
     }
 
-    // Init
     document.getElementById("btnAjouter").addEventListener("click", ajouterSysteme);
     chargerDonnees();
   </script>
 </body>
 </html>
-
